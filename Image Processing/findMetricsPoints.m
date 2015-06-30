@@ -69,7 +69,6 @@ else
 end
 
 if ~cancelled
-    
     % manually select pylorus
     
     message = 'Please select the pylorus. The pylorus cannot be automatically defined.';

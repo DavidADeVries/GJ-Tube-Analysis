@@ -48,7 +48,7 @@ horizonRes = 0.5;
 
 image = double(image);
 
-averInterpolValue = interpolate(image, lastPoint);
+averageInterpolVal = 
 
 while curPriorNum <= numWaypoints && numTubePoints < maxIters
     %pause(0.001);
@@ -66,7 +66,7 @@ while curPriorNum <= numWaypoints && numTubePoints < maxIters
 %     
 %     curInterpolValue = curInterpolValue / (2*interRadius + 1).^2;
     
-    averInterpolValue = (averInterpolValue + interpolate(image, curPoint))/2;
+    curInterpolValue = interpolate(image, curPoint);
     
     ang = -searchAngle;
     while ang <= searchAngle
@@ -79,7 +79,7 @@ while curPriorNum <= numWaypoints && numTubePoints < maxIters
         for i=0:width/horizonRes
             [x,y] = findXY(curPoint, vectorAngle + ang, i*horizonRes);
             
-            sum = sum + abs(averInterpolValue - interpolate(image, [x,y]));
+            sum = sum + abs(curInterpolValue - interpolate(image, [x,y]));
         end
         
         interpolValues(((ang+searchAngle)/angularRes)+1) = sum;
