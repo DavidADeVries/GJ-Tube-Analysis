@@ -34,7 +34,7 @@ rmpath('./Old Stuff [Delete]'); %ignore old files
 
 % Edit the above text to modify the response to help GJ_Tube
 
-% Last Modified by GUIDE v2.5 30-Jun-2015 13:03:37
+% Last Modified by GUIDE v2.5 30-Jun-2015 10:43:49
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -937,11 +937,12 @@ angularRes = str2double(get(handles.angularRes, 'String'));
 
 waypoints = currentFile.getWaypoints();
 
-[rawTubePoints, ~] = pathFinder(image, waypoints, interpolConstrain, priorConstrain, curveConstrain, radius, searchAngle, width, angularRes);
+[tubePoints, waypointPassbys] = pathFinder(image, waypoints, interpolConstrain, priorConstrain, curveConstrain, radius, searchAngle, width, angularRes);
 
 currentFile.tubeOn = true;
 
-currentFile = currentFile.setTubePointsFromRaw(rawTubePoints);
+currentFile = currentFile.setTubePoints(tubePoints);
+currentFile = currentFile.setWaypointPassbys(waypointPassbys);
 
 % finalize changes
 updateUndo = true;
@@ -1945,10 +1946,12 @@ tubeHandle = imfreehand(handles.imageAxes);
 rawTubePoints = getPosition(tubeHandle);
 delete(tubeHandle); %don't need it no more, going draw some splines instead
 
+
+
 currentFile = currentFile.setWaypoints([]); % no waypoints are needed when manual segmentation is done
 currentFile.waypointsOn = false;
 
-currentFile = currentFile.setTubePointsFromRaw(rawTubePoints);
+currentFile = currentFile.setTubePointsFromRaw(tubePoints);
 currentFile.tubeOn = true;
 
 % finalize changes
@@ -1965,10 +1968,6 @@ updateToggleButtons(getCurrentFile(handles), handles);
 guidata(hObject, handles);
 
 
-% --------------------------------------------------------------------
-function menuManualSegmentTube_Callback(hObject, eventdata, handles)
-% hObject    handle to menuManualSegmentTube (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-manualSegmentTube_ClickedCallback(hObject, eventdata, handles);
+
+

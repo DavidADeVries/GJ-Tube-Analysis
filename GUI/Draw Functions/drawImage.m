@@ -20,6 +20,7 @@ handles.refLineHandle = imline.empty;
 handles.midlineHandle = imline.empty;
 handles.quickMeasureLineHandle = imline.empty;
 handles.quickMeasureTextLabel = TextLabel.empty;
+handles.tubePointHandles = impoint.empty;
 
 handles.longitudinalDisplayTubes = LongitudinalDisplayTube.empty;
 handles.deltaLineTextLabels = TextLabel.empty;

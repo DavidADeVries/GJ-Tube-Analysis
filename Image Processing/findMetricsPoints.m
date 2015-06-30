@@ -3,7 +3,7 @@ function [ metricPoints, handles ] = findMetricsPoints( currentFile, handles, hO
 %such that midline is vertical) and then extracts two maximums and a
 %minimum
 
-tubePoints = currentFile.tubePoints;
+tubePoints = currentFile.getDisplayTubePoints();
 
 pointA = []; %first max after pylorus (will be a min due matlab coords)
 pointB = []; %horizontal "min"
@@ -47,21 +47,21 @@ if ~isempty(tubePoints)
         
         %look for vertical max in matlab coords (point C)
         if preYDiff > 0 && postYDiff > 0
-            pointC = applyRotationMatrix(tubePoints(i,:), invRotMatrix);
+            pointC = confirmNonRoi(applyRotationMatrix(tubePoints(i,:), invRotMatrix), currentFile.roiOn, currentFile.roiCoords);
         end
         
         %look for vertical min in matlab coords (point A or D)
         if preYDiff < 0 && postYDiff < 0
             if isempty(pointB) && isempty(pointC) %still in point A territory
-                pointA = applyRotationMatrix(tubePoints(i,:), invRotMatrix);
+                pointA = confirmNonRoi(applyRotationMatrix(tubePoints(i,:), invRotMatrix), currentFile.roiOn, currentFile.roiCoords);
             else
-                pointD = applyRotationMatrix(tubePoints(i,:), invRotMatrix);
+                pointD = confirmNonRoi(applyRotationMatrix(tubePoints(i,:), invRotMatrix), currentFile.roiOn, currentFile.roiCoords);
             end
         end
         
         %look for hoizontal min in matlab coords (point B)
         if preXDiff < 0 && postXDiff < 0
-            pointB = applyRotationMatrix(tubePoints(i,:), invRotMatrix);
+            pointB = confirmNonRoi(applyRotationMatrix(tubePoints(i,:), invRotMatrix), currentFile.roiOn, currentFile.roiCoords);
         end
     end
 else

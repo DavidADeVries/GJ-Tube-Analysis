@@ -5,6 +5,8 @@ classdef Constants
         HOME_DIRECTORY = '/data/projects/GJtube/testdata/'; %make sure it's absolute and ends with '/'
         SAVE_TITLE_SUGGESTION = 'Tube Analysis';
         
+        TUBE_POINT_RESOLUTION = 25;
+        
         TEXT_LABEL_BORDER_WIDTH = 1;
         DISPLAY_LINE_BORDER_WIDTH = 1;
         

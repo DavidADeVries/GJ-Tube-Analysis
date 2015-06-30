@@ -60,6 +60,7 @@ else %general toggles that must be turned on if any file is open, regardless of 
     set(handles.selectContrast, 'Enable', 'on');
     set(handles.selectRoi, 'Enable', 'on');
     set(handles.selectWaypoints, 'Enable', 'on');
+    set(handles.manualSegmentTube, 'Enable', 'on');
     set(handles.selectReference, 'Enable', 'on');
     set(handles.selectMidline, 'Enable', 'on');
     set(handles.quickMeasure, 'Enable', 'on');
@@ -81,6 +82,7 @@ else %general toggles that must be turned on if any file is open, regardless of 
     set(handles.menuSelectContrast, 'Enable', 'on');
     set(handles.menuSelectRoi, 'Enable', 'on');
     set(handles.menuSelectWaypoints, 'Enable', 'on');
+    set(handles.menuManualSegmentTube, 'Enable', 'on');
     set(handles.menuSelectReference, 'Enable', 'on');
     set(handles.menuSelectMidline, 'Enable', 'on');
     set(handles.menuQuickMeasure, 'Enable', 'on');
@@ -265,7 +267,7 @@ else %general toggles that must be turned on if any file is open, regardless of 
     
     % tuning button (only available when there are waypoints)
     
-    if isempty(file.waypoints)
+    if isempty(file.tubePoints)
         set(handles.tuneTube, 'Enable', 'off');
         set(handles.menuTuneTube, 'Enable', 'off');
     else
