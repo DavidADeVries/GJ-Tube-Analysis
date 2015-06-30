@@ -35,12 +35,12 @@ if ~isempty(tubePoints)
     %midline is vertical
     tubePoints45 = applyRotationMatrix(tubePoints, rotMatrix45);
     
-    % keep track of maximum vertical value left (medical right) of midline
-    % done so that in case point C isn't found, it is set to be the to be this
+    % keep track of minimum vertical value left (medical right) of midline
+    % done so that in case min isn't found, it is set to be the to be this
     % point
     
-    maxVerticalValue = -Inf; %vertical coords are flipped in matlab
-    maxVerticalIndex = 0;
+    minVerticalValue = -Inf; %vertical coords are flipped in matlab
+    minVerticalIndex = 0;
         
     for i=1+extremaRadius:length(tubePoints)-extremaRadius        
         prePoints = zeros(extremaRadius, 2);
@@ -64,24 +64,19 @@ if ~isempty(tubePoints)
         if preYDiff > 0 && postYDiff > 0
             pointC = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
         end
-        
-        %if max not found for point C, assign it to be vertical max (matlab
-        %coords) for left of the midline (medically right of midline)
+                
         currentLeftOfMidline = rotTubePoints(i,1) < corMidlinePoints(1,1);
         
         if isempty(pointC) && currentLeftOfMidline
-            % update max if needed
-            if rotTubePoints(i,2) > maxVerticalValue
-                maxVerticalValue = rotTubePoints(i,2);
-                maxVerticalIndex = i;
+            if rotTubePoints(i,2) > minVerticalValue
+                minVerticalValue = rotTubePoints(i,2);
+                minVerticalIndex = i;
             end
             
-            % assign point C if we're crossing from left of midline to
-            % right of midline
             nextRightOfMidline = rotTubePoints(i+1,1) >= corMidlinePoints(1,1);
         
             if nextRightOfMidline
-                pointC = confirmNonRoi(tubePoints(maxVerticalIndex,:), currentFile.roiOn, currentFile.roiCoords);
+                pointC = confirmNonRoi(tubePoints(minVerticalIndex,:), currentFile.roiOn, currentFile.roiCoords);
             end
         end  
         
