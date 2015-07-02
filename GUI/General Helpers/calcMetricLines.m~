@@ -85,7 +85,7 @@ lines(4) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefi
 % % line e % %
 AandBHalfway = getHalfwayPoint(pointA, pointB);
 
-startPoint = [AandBHalfway(1), pointA(2)]; %line is shifted to be halway between A and B horizontally. Gives room for line b if D is below A
+startPoint = [AandBHalfway(1), pointA(2)]; %line is shifted to be halway between A and B horizontally. Gives room for 
 endPoint = [AandBHalfway(1), pointC(2)];
 
 tagPoint = [startPoint(1)-horzOffset, startPoint(2)+20]; %can't go halfway, too many lines. Go just a bit from the top. 
@@ -137,25 +137,21 @@ lines(8) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefi
 % % find bridges % %
 isBridge = true; %these are just reference lines for the measurment lines, such that their ends are floating in space
 
-% % bridge for line e from C% %
+% % bridge for line e % %
 startPoint = pointC;
-endPoint = [AandBHalfway(1), pointC(2)]; %see line e form AandBHalfway
+endPoint = [pointA(1), pointC(2)];
 
-tagPoint = startPoint; %no tag
+tagPoint = []; %no tag
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 
 lines(9) = Line(startPoint, endPoint, tagPoint, 'left', isBridge);
 
 % % bridge for line d,g,h % %
-yCoords = [pointD(2), pylorusPoint(2), pointB(2), BandCHalfway(2)]; %these points may appear in various orders vertically. We want the bridge to run from the top most to the bottom most points. See line h for BandCHalfway
-maxY = max(yCoords);
-minY = min(yCoords);
+startPoint = pointD;
+endPoint = [pointD(1), BandCHalfway(2)]; %see line h for BandCHalfway
 
-startPoint = [pointD(1), maxY];
-endPoint = [pointD(1), minY]; 
-
-tagPoint = startPoint; %no tag
+tagPoint = []; %no tag
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 
@@ -165,17 +161,17 @@ lines(10) = Line(startPoint, endPoint, tagPoint, 'right', isBridge);
 startPoint = pointB;
 endPoint = [pointB(1), BandCHalfway(2)]; %see line h for BandCHalfway
 
-tagPoint = startPoint; %no tag
+tagPoint = []; %no tag
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 
 lines(11) = Line(startPoint, endPoint, tagPoint, 'right', isBridge);
 
-% % bridge for line e from A% %
+% % bridge for line e % %
 startPoint = [AandBHalfway(1), pointA(2)]; %see line e for AandBHalfway
 endPoint = pointA;
 
-tagPoint = startPoint; %no tag
+tagPoint = []; %no tag
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 

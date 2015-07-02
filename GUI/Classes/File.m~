@@ -109,14 +109,7 @@ classdef File
             localTubePoints = file.getTubePoints();
             
             if ~isempty(localTubePoints)
-                x = localTubePoints(:,1)';
-                y = localTubePoints(:,2)';
-                
-                % get all the points needed to plot by fitting a spline to the tube points
-                % and sampling a series of points from it with fnplt
-                spline = cscvn([x;y]); %spline stored as a function
-                
-                displayTubePoints = fnplt(spline)';
+                displayTubePoints = getSplinePoints(localTubePoints);
             else
                 displayTubePoints = [];
             end
@@ -283,67 +276,7 @@ classdef File
                 file.metricPoints = localMetricPoints;
             end
         end
-        
-        %% setNewWaypoints %%
-        function [ file ] = setNewWaypoints(file, tuningPoints, waypointHandles)
-            %by looking at shifts in the tuning points, a new set of
-            %waypoints is created
-            
-            % first the original waypoints themselves
-            
-%             numWaypoints = length(waypointHandles);
-%             
-%             newPositions = zeros(numWaypoints, 2);
-%             
-%             for i=1:numWaypoints
-%                 newPositions(i,:) = getPosition(waypointHandles(i));
-%             end
-%             
-%             file = file.setWaypoints(newPositions);
-            
-            %now add in the new ones
-                        
-            numTuningPoints = length(tuningPoints);
-            
-            newWaypoints = [];
-            
-            newWaypoints(1,:) = getPosition(waypointHandles(1)); %first two waypoints remain the same
-            newWaypoints(2,:) = getPosition(waypointHandles(2));
-            
-            spaceNum = 2; %start at space 2 (space 1 is between the first 2 waypoints)
-            tuningPointNum = 1;
-            oldWaypointNum = 3;
-            newWaypointNum = 3;
-            
-            while oldWaypointNum <= length(waypointHandles)
-                if tuningPointNum > numTuningPoints
-                    newWaypoints(newWaypointNum,:) = getPosition(waypointHandles(oldWaypointNum));%oldWaypoints(oldWaypointNum,:);
-                    
-                    newWaypointNum = newWaypointNum + 1;
-                    oldWaypointNum = oldWaypointNum + 1;
-                elseif tuningPoints(tuningPointNum).spaceNumber > spaceNum
-                    newWaypoints(newWaypointNum,:) = getPosition(waypointHandles(oldWaypointNum));%oldWaypoints(oldWaypointNum,:);
-                    
-                    oldWaypointNum = oldWaypointNum + 1;
-                    newWaypointNum = newWaypointNum + 1;
-                    spaceNum = spaceNum + 1;
-                else
-                    currentTuningPointPos = getPosition(tuningPoints(tuningPointNum).handle);          
-                    
-                    if isequal(currentTuningPointPos, tuningPoints(tuningPointNum).getOriginalPosition(file)) %point has moved, so not being used
-                        tuningPointNum = tuningPointNum + 1;
-                    else
-                        newWaypoints(newWaypointNum,:) = currentTuningPointPos(1,:);
-                        
-                        newWaypointNum = newWaypointNum + 1;
-                        tuningPointNum = tuningPointNum + 1;
-                    end
-                end
-            end
-            
-            file = file.setWaypoints(newWaypoints);
-        end
-        
+                
         %% updateUndoCache %%
         % saves the file at current into its own undo cache
         function [ file ] = updateUndoCache( file )
@@ -454,9 +387,7 @@ classdef File
         end
         
         %% getTubeMetricStrings %%
-        function [tubeMetricStrings] = getTubeMetricStrings(file)
-            [unitString, unitConversion] = file.getUnitConversion;
-            
+        function [tubeMetricStrings] = getTubeMetricStrings(file)            
             tubeMetrics = file.calcTubeMetrics();
                      
             numTubeMetrics = length(tubeMetrics);            
@@ -464,39 +395,61 @@ classdef File
             
             if numTubeMetrics == 0
                 tubeMetricStrings = {'',''}; %tubepoints must not be defined
-            elseif isempty(unitString) %empty strings
-                for i=1:numTubeMetrics
-                    tubeMetricStrings{i} = '';
-                end
             else
-                convertedMetrics = unitConversion(1) .* tubeMetrics;
-            
-                roundedMetrics = round(10 .* convertedMetrics) ./ 10;
+                roundedMetrics = round(10 .* tubeMetrics) ./ 10;
                 
-                tubeMetricStrings{1} = ['Tube Length from Pylorus to Point D, e = ', num2str(roundedMetrics(1)), unitString];
-                tubeMetricStrings{2} = ['Tube Length from Point A to Point D, f = ', num2str(roundedMetrics(2)), unitString];
+                tubeMetricStrings{1} = ['Average First Derivative from Pylorus to Point C, i = ', num2str(roundedMetrics(1))];
+                tubeMetricStrings{2} = ['Average First Derivative from Point A to Point C, j = ', num2str(roundedMetrics(2))];
             end
             
         end
         
         %% calcTubeMetrics %%
-        % calculates the along tube distance from pylorus and point A to
-        % point D, in pixels
+        % calculates the "tightness" of the tube from pylorus to C and A to
+        % C using derivatives
         function [tubeMetrics] = calcTubeMetrics(file)
             localMetricPoints = file.metricPoints;
-            localTubePoints = file.tubePoints;
-            
-            if isempty(localTubePoints)
+               
+            if isempty(file.tubePoints())
                 tubeMetrics = [];
             else
+                localTubePoints = getSplinePoints(file.tubePoints()); %don't want any ROI business
+                spline = getSpline(file.tubePoints());
+                
+                splineDeriv = fnder(spline, 1);
+                derivPoints = fnplt(splineDeriv)';
+                
                 pylorusTubePointNum = getClosestTubePointNum(localMetricPoints.pylorusPoint, localTubePoints);
                 pointATubePointNum = getClosestTubePointNum(localMetricPoints.pointA, localTubePoints);
-                pointDTubePointNum = getClosestTubePointNum(localMetricPoints.pointD, localTubePoints);
+                pointCTubePointNum = getClosestTubePointNum(localMetricPoints.pointC, localTubePoints);
                 
-                interTubePointDistance = norm(localTubePoints(1,:) - localTubePoints(2,:));
+                range = pylorusTubePointNum:pointCTubePointNum;
+                pylorusToCDerivPoints = derivPoints(range,:);
+                                
+                range = pointATubePointNum:pointCTubePointNum;
+                AToCDerivPoints = derivPoints(range,:);
                 
-                tubeMetrics(1) = (pointDTubePointNum - pylorusTubePointNum) * interTubePointDistance;
-                tubeMetrics(2) = (pointDTubePointNum - pointATubePointNum) * interTubePointDistance;
+                %take norm of each deriv points.
+                %these derivative are 2D because the spline is parametric,
+                %not a function
+                pylorusToCDerivNorms = zeros(length(pylorusToCDerivPoints), 1);
+                
+                for i=1:length(pylorusToCDerivPoints)
+                    pylorusToCDerivNorms(i) = norm(pylorusToCDerivPoints(i,:));
+                end
+                
+                AToCDerivNorms = zeros(length(AToCDerivPoints), 1);
+                
+                for i=1:length(AToCDerivPoints)
+                    AToCDerivNorms(i) = norm(AToCDerivPoints(i,:));
+                end
+                
+                %take average of the norm of the derivatives
+                pylorusToCDerivMean = mean(pylorusToCDerivNorms);
+                AToCDerivMean = mean(AToCDerivNorms);                
+                                
+                tubeMetrics(1) = pylorusToCDerivMean;
+                tubeMetrics(2) = AToCDerivMean;
             end
         end
 
@@ -504,3 +457,19 @@ classdef File
     
 end
 
+function splinePoints = getSplinePoints(tubePoints)
+spline = getSpline(tubePoints);
+
+splinePoints = fnplt(spline)';
+
+end
+
+function spline = getSpline(points)
+x = points(:,1)';
+y = points(:,2)';
+
+% get all the points needed to plot by fitting a spline to the tube points
+% and sampling a series of points from it with fnplt
+spline = cscvn([x;y]); %spline stored as a function
+
+end
