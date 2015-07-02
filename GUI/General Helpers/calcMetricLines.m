@@ -34,7 +34,9 @@ horzOffset = +3; %px
 % % find lines % %
 isBridge = false; %all these are actual measurement lines, not bridge reference lines
 
-% % line a % %
+% % % % % % % %
+% % line  a % %
+% % % % % % % %
 startPoint = pointD;
 endPoint = [pointA(1), pointD(2)];
 
@@ -46,7 +48,9 @@ tagPoint = [halfwayPoint(1), halfwayPoint(2) + vertOffset];
 tagStringPrefix = 'a = ';
 lines(1) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix);
 
-% % line b % %
+% % % % % % % %
+% % line  b % %
+% % % % % % % %
 startPoint = pointA;
 endPoint = [pointA(1), pointD(2)];
 
@@ -55,10 +59,15 @@ tagPoint = [halfwayPoint(1)-horzOffset, halfwayPoint(2)];
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 
-tagStringPrefix = 'b = ';
-lines(2) = Line(startPoint, endPoint, tagPoint, 'right', isBridge, tagStringPrefix);
+% length should be negative if D is below A
+isNeg =  pointD(2) > pointA(2); %remember vertical MATLAB coords are flipped!
 
-% % line c % %
+tagStringPrefix = 'b = ';
+lines(2) = Line(startPoint, endPoint, tagPoint, 'right', isBridge, tagStringPrefix, isNeg);
+
+% % % % % % % %
+% % line  c % %
+% % % % % % % %
 startPoint = pylorusPoint;
 endPoint = [pylorusPoint(1), pointD(2)];
 
@@ -67,10 +76,15 @@ tagPoint = [halfwayPoint(1)+horzOffset, halfwayPoint(2)];
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 
-tagStringPrefix = 'c = ';
-lines(3) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix);
+% length should be negative if D is below pylorus
+isNeg = pointD(2) > pylorusPoint(2); %remember vertical MATLAB coords are flipped!
 
-% % line d % %
+tagStringPrefix = 'c = ';
+lines(3) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix, isNeg);
+
+% % % % % % % %
+% % line  d % %
+% % % % % % % %
 startPoint = pylorusPoint;
 endPoint = [pointD(1), pylorusPoint(2)];
 
@@ -82,7 +96,9 @@ tagPoint = [halfwayPoint(1), halfwayPoint(2) + vertOffset];
 tagStringPrefix = 'd = ';
 lines(4) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix);
 
-% % line e % %
+% % % % % % % %
+% % line  e % %
+% % % % % % % %
 AandBHalfway = getHalfwayPoint(pointA, pointB);
 
 startPoint = [AandBHalfway(1), pointA(2)]; %line is shifted to be halway between A and B horizontally. Gives room for line b if D is below A
@@ -95,7 +111,9 @@ tagPoint = [startPoint(1)-horzOffset, startPoint(2)+20]; %can't go halfway, too 
 tagStringPrefix = 'e = ';
 lines(5) = Line(startPoint, endPoint, tagPoint, 'right', isBridge, tagStringPrefix);
 
-% % line f % %
+% % % % % % % %
+% % line  f % %
+% % % % % % % %
 startPoint = pointB;
 endPoint = [midlineX, pointB(2)];
 
@@ -107,7 +125,9 @@ tagPoint = [halfwayPoint(1), halfwayPoint(2) + vertOffset];
 tagStringPrefix = 'f = ';
 lines(6) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix);
 
-% % line g % %
+% % % % % % % %
+% % line  g % %
+% % % % % % % %
 startPoint = [midlineX, pointB(2)];
 endPoint = [pointD(1), pointB(2)];
 
@@ -116,10 +136,15 @@ tagPoint = [halfwayPoint(1), halfwayPoint(2) + vertOffset];
 
 [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endPoint, tagPoint, invRotMatrix, roiOn, roiCoords);
 
-tagStringPrefix = 'g = ';
-lines(7) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix);
+% length should be negative if D is left (medical right) of midline
+isNeg = pointD(1) < midlineX;
 
-% % line h % %
+tagStringPrefix = 'g = ';
+lines(7) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefix, isNeg);
+
+% % % % % % % %
+% % line  h % %
+% % % % % % % %
 BandCHalfway = getHalfwayPoint(pointB, pointC);
 
 startPoint = [pointB(1), BandCHalfway(2)];
@@ -137,7 +162,9 @@ lines(8) = Line(startPoint, endPoint, tagPoint, 'left', isBridge, tagStringPrefi
 % % find bridges % %
 isBridge = true; %these are just reference lines for the measurment lines, such that their ends are floating in space
 
+% % % % % % % % % % % % % % % %
 % % bridge for line e from C% %
+% % % % % % % % % % % % % % % %
 startPoint = pointC;
 endPoint = [AandBHalfway(1), pointC(2)]; %see line e form AandBHalfway
 
@@ -147,7 +174,9 @@ tagPoint = startPoint; %no tag
 
 lines(9) = Line(startPoint, endPoint, tagPoint, 'left', isBridge);
 
+% % % % % % % % % % % % % % %
 % % bridge for line d,g,h % %
+% % % % % % % % % % % % % % %
 yCoords = [pointD(2), pylorusPoint(2), pointB(2), BandCHalfway(2)]; %these points may appear in various orders vertically. We want the bridge to run from the top most to the bottom most points. See line h for BandCHalfway
 maxY = max(yCoords);
 minY = min(yCoords);
@@ -161,7 +190,9 @@ tagPoint = startPoint; %no tag
 
 lines(10) = Line(startPoint, endPoint, tagPoint, 'right', isBridge);
 
+% % % % % % % % % % % % %
 % % bridge for line h % %
+% % % % % % % % % % % % %
 startPoint = pointB;
 endPoint = [pointB(1), BandCHalfway(2)]; %see line h for BandCHalfway
 
@@ -171,7 +202,9 @@ tagPoint = startPoint; %no tag
 
 lines(11) = Line(startPoint, endPoint, tagPoint, 'right', isBridge);
 
+% % % % % % % % % % % % % % % %
 % % bridge for line e from A% %
+% % % % % % % % % % % % % % % %
 startPoint = [AandBHalfway(1), pointA(2)]; %see line e for AandBHalfway
 endPoint = pointA;
 
