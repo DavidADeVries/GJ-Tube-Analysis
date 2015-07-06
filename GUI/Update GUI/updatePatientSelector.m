@@ -7,14 +7,15 @@ patients = handles.patients;
 numPatients = handles.numPatients;
 
 if numPatients == 0 %if no patients are open
-    set(handles.patientSelector, 'String', {'No Patient Selected'}, 'Value', 1);
+    set(handles.patientSelector, 'String', {'No Patient Selected'}, 'Value', 1, 'Enable', 'off');
 else
-    for i=1:length(patients)
+    selectorOptions = cell(numPatients,1);
+    
+    for i=1:numPatients
         selectorOptions{i} = num2str(patients(i).patientId);
     end
     
-    set(handles.patientSelector, 'String', selectorOptions);
-    set(handles.patientSelector, 'Value', handles.currentPatientNum);
+    set(handles.patientSelector, 'String', selectorOptions, 'Value', handles.currentPatientNum, 'Enable', 'on');
 end
 
 

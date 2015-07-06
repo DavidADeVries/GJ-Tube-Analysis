@@ -3,8 +3,8 @@ classdef Patient
     %earliest to latest
     
     properties
-        files = File.empty;
-        currentFileNum = 0;
+        studies = Study.empty;
+        currentStudyNum = 0;
         patientId
         savePath = '';
         changesPending = true;
@@ -14,64 +14,214 @@ classdef Patient
     
     methods
         %% Constructor %%
-        function patient = Patient(patientId)
+        function patient = Patient(patientId, studies)
             patient.patientId = patientId;
+            patient.studies = studies;
+            
+            if ~isempty(studies)
+                patient.currentStudyNum = 1;
+            end            
         end
         
+        %% getCurrentStudy %%
+        function study = getCurrentStudy(patient)
+            if patient.currentStudyNum <= patient.numStudies() && patient.currentStudyNum > 0
+                study = patient.studies(patient.currentStudyNum);
+            else
+                study = Study.empty;
+            end
+        end
+        
+        %% numStudies %%
+        function num = numStudies(patient)
+            num = length(patient.studies);
+        end        
         
         %% getCurrentFile %%
         function file = getCurrentFile(patient)
-            if patient.currentFileNum == 0 %no files
-                file = File.empty;
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                file = study.getCurrentFile();
             else
-                file = patient.files(patient.currentFileNum);
+                file = File.empty;
             end
         end
-        
-        %% updateCurrentFile %%
-        function patient = updateCurrentFile(patient, file) %updates the current file to be the file provided
-            patient.files(patient.currentFileNum) = file;
-        end
-        
-        %% addFile %%
-        function patient = addFile(patient, file)            
-            oldFiles = patient.files;
-            numOldFiles = length(oldFiles);            
-            
-            i = 1; %needs to be defined before hand, in case numOldFiles = 0;
-            
-            while i <= numOldFiles
-                if file.date < oldFiles(i).date
-                    break;
-                end
-                
-                i = i+1;
-            end
-                      
-            if i == 1
-                newFiles = [file, oldFiles];                     
-                patient.currentFileNum = 1;
-            elseif i == numOldFiles
-                newFiles = [oldFiles, file];                                 
-                patient.currentFileNum = numOldFiles+1;
-            else            
-                newFiles = [oldFiles(1:i-1), file, oldFiles(i:numOldFiles)];
-                patient.currentFileNum = i;
-            end
                         
-            patient.files = newFiles;   
+        %% addFile %%
+        function patient = addFile(patient, newFile)  
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                study = study.addFile(newFile);
+                patient.studies(patient.currentStudyNum) = study;
+            end  
         end
         
-        %% getNumFiles %%
-        function numFiles = getNumFiles(patient)
-            numFiles = length(patient.files);
+        %% removeCurrentFile %%
+        function patient = removeCurrentFile(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                study = study.removeCurrentFile();
+                patient.studies(patient.currentStudyNum) = study;
+            end
+        end
+        
+        %% addStudy %%
+        function patient = addStudy(patient, newStudy)
+            localStudies = patient.studies;
+            
+            localStudies = [localStudies, newStudy];
+            
+            patient.studies = localStudies;
+            patient.currentStudyNum = numStudies(patient);
+        end
+        
+        %% removeCurrentStudy %%
+        function patient = removeCurrentStudy(patient)
+            localStudies = patient.studies;
+            
+            localStudies(patient.currentStudyNum) = []; %remove
+            
+            patient.studies = localStudies;
+            
+            numberStudies = patient.numStudies();
+            
+            if patient.currentStudyNum > numberStudies %currentStudyNum stays the same unless bottom study is removed
+                patient.currentStudyNum = numberStudies;
+            end   
+        end
+        
+        %% addSeries %%
+        function patient = addSeries(patient, newSeries)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                study = study.addSeries(newSeries);
+                patient.studies(patient.currentStudyNum) = study;
+            end
+        end
+        
+        %% removeCurrentSeries %%
+        function patient = removeCurrentSeries(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                study = study.removeCurrentSeries();
+                patient.studies(patient.currentStudyNum) = study;
+            end
+        end
+        
+        
+        %% getNumFilesInSeries %%
+        function numFiles = getNumFilesInSeries(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                numFiles = study.getNumFilesInSeries();
+            else
+                numFiles = 0;
+            end
+        end
+        
+        %% getCurrentFileNumInSeries %%
+        function fileNum = getCurrentFileNumInSeries(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                fileNum = study.getCurrentFileNumInSeries();
+            else
+                fileNum = 0;
+            end
+        end
+        
+        %% getAllSeriesForCurrentStudy %%
+        function series = getAllSeriesForCurrentStudy(patient)
+            study = patient.getCurrentStudy();
+            
+            if isempty(study)
+                series = Series.empty;
+            else
+                series = study.series();
+            end
+        end
+        
+        %% getCurrentSeries %%
+        function series = getCurrentSeries(patient)
+            study = patient.getCurrentStudy();
+            
+            if isempty(study)
+                series = Series.empty;
+            else
+                series = study.getCurrentSeries();
+            end
+        end
+        
+        %% getCurrentSeriesNum %%
+        function seriesNum = getCurrentSeriesNum(patient)
+            study = patient.getCurrentStudy();
+            
+            if isempty(study)
+                seriesNum = 0;
+            else
+                seriesNum = study.currentSeriesNum;
+            end
+        end
+        
+        %% setCurrentSeriesNum %%
+        function patient = setCurrentSeriesNum(patient, seriesNum)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                study.currentSeriesNum = seriesNum;
+                patient.studies(patient.currentStudyNum) = study;
+            end
+        end
+        
+        %% earlierImage %%
+        function patient = earlierImage(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                patient.studies(patient.currentStudyNum) = study.earlierImage();
+            end
+        end
+        
+        %% laterImage %%
+        function patient = laterImage(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                patient.studies(patient.currentStudyNum) = study.laterImage();
+            end
+        end
+        
+        %% earliestImage %%
+        function patient = earliestImage(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                patient.studies(patient.currentStudyNum) = study.earliestImage();
+            end
+        end
+        
+        %% latestImage %%
+        function patient = latestImage(patient)
+            study = patient.getCurrentStudy();
+            
+            if ~isempty(study)
+                patient.studies(patient.currentStudyNum) = study.latestImage();
+            end
         end
         
         %% updateLongitudinalFileNumber %%
         function patient = updateLongitudinalFileNumbers(patient) % checks file list to see if any others should be added on as an option, or if any should be removed (if they're no longer valid: no tube, no metric points, etc)
             patientFiles = patient.files;
             fileNumbersCounter = 1;
-
+            
+            fileNumbers = [];
+            
             for i=1:length(patientFiles)
                 if patientFiles(i).isValidForLongitudinal()
                     fileNumbers(fileNumbersCounter) = i;
@@ -118,58 +268,27 @@ classdef Patient
             end           
         end
         
-        %% removeCurrentFile %%
-        function patient = removeCurrentFile(patient) %removes current file, new current file is later image (earlier if latest image is removed)
-            oldFiles = patient.files;
-            numOldFiles = length(oldFiles);
-            
-            numNewFiles = numOldFiles - 1;
-            
-            currentFileNumber = patient.currentFileNum;
-            
-            if numNewFiles == 0
-                patient.currentFileNum = 0;
-                patient.files = [];
-            else
-                newFileCounter = 1;
-                newFiles = File.empty(numNewFiles, 0);
-                
-                for i=1:numOldFiles
-                    if i ~= currentFileNumber
-                        newFiles(newFileCounter) = oldFiles(i);
-                        newFileCounter = newFileCounter + 1;
-                    end
-                end
-                
-                patient.files = newFiles;
-                
-                if currentFileNumber > numNewFiles
-                    currentFileNumber = numNewFiles; 
-                end
-                
-                patient.currentFileNum = currentFileNumber;
-            end            
-        end
         
         %% updateFile %%
         function [ patient ] = updateFile( patient, file, updateUndo, changesPending, varargin)
             %pushUpChanges updates current file changes for a patient
+            study = patient.getCurrentStudy();
             
-            if updateUndo
-                file = file.updateUndoCache();
-            end
-            
-            if length(varargin) == 1 %fileNumber is specified! Not currentFile
-                fileNum = varargin{1};
-                patient.files(fileNum) = file;
-            else
-                patient = patient.updateCurrentFile(file);
-            end
-            
-            if changesPending
-                patient.changesPending = true;
-            end
-            
+            if ~isempty(study)
+                if updateUndo
+                    file = file.updateUndoCache();
+                end
+                
+                if changesPending
+                    patient.changesPending = true;
+                end
+                
+                if length(varargin) == 1
+                    patient.studies(patient.currentStudyNum) = study.updateFile(file, varargin);
+                else
+                    patient.studies(patient.currentStudyNum) = study.updateFile(file);
+                end
+            end  
         end
 
         %% saveToDisk %%
@@ -192,7 +311,11 @@ classdef Patient
             if ~isempty(patient.savePath) %if not empty, save, otherwise abort
                 patient.changesPending = false; % because they're being saved now :)
                 
+                waitHandle = pleaseWaitDialog('saving patient data.');
+                
                 save(patient.savePath, 'patient');
+                
+                delete(waitHandle);
             end
         end
     end

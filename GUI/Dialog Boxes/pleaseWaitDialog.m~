@@ -1,0 +1,19 @@
+function [ handle ] = pleaseWaitDialog(message)
+% [ handle ] = pleaseWaitDialog()
+% tells the user to wait for whatever
+
+message = ['Please wait, ', message];
+
+title = 'Please Wait...';
+
+handle = dialog('Name',title);
+
+position = get(handle, 'Position');
+
+[x,y] = position
+
+uicontrol('Parent', handle, 'Style', 'text', 'String', message);
+
+
+end
+

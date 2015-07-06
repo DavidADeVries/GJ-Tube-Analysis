@@ -3,6 +3,7 @@ classdef File
     
     properties
         dicomInfo
+        name = '';
         image
         roiCoords = [];
         originalLimits
@@ -33,11 +34,12 @@ classdef File
     
     methods
         %% Constructor %%
-        function file = File(dicomInfo, dicomImage, originalLimits)
+        function file = File(name, dicomInfo, dicomImage, originalLimits)
+            file.name = name;
             file.dicomInfo = dicomInfo;
             file.image = dicomImage;
             file.originalLimits = originalLimits;
-            file.date = Date(dicomInfo.AcquisitionDate);
+            file.date = Date(dicomInfo.StudyDate);
             
             file.undoCache = UndoCache(file);
         end
@@ -112,6 +114,28 @@ classdef File
                 displayTubePoints = getSplinePoints(localTubePoints);
             else
                 displayTubePoints = [];
+            end
+        end
+        
+        %% getSeriesDescription %%
+        function description = getSeriesDescription(file)
+            header = file.dicomInfo;
+            
+            if isfield(header, 'SeriesDescription')
+                description = header.SeriesDescription;
+            else
+                description = 'No Description Found';
+            end
+        end
+        
+        %% getStudyDescription %%
+        function description = getStudyDescription(file)
+            header = file.dicomInfo;
+            
+            if isfield(header, 'StudyDescription')
+                description = header.StudyDescription;
+            else
+                description = 'No Description Found';
             end
         end
         

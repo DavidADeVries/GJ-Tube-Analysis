@@ -8,7 +8,7 @@ patientNum = 0;
 i = 1;
 
 while patientNum == 0 && i <= length(patients)
-   if patients(i).patientId == patientId
+   if strcmp(patients(i).patientId, patientId)
        patient = patients(i);
        patientNum = i;
    end

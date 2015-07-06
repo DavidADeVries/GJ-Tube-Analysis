@@ -3,24 +3,53 @@ function [ ] = updateImageInfo( file, handles)
 
 if isempty(file)
     noImage = 'No Image Selected';
+    na = 'N/A';
     
-    filePath = noImage;
-    modality = noImage;
-    date = noImage;
     sequenceNumber = '0/0';
-else    
-    filePath = file.dicomInfo.Filename;
+    
+    filename = noImage;
+    modality = na;
+    date = na;
+    
+    seriesDescription = na;
+    studyDescription = na;
+else
+    path = file.dicomInfo.Filename;
+    pathComponents = strsplit(path,'/');
+    numComponents = length(pathComponents);
+    
+    filename = '';
+    
+    if numComponents >= 1
+        filename = pathComponents{numComponents}; %actual filename
+    end
+    
+    if numComponents >= 2
+        filename = strcat(pathComponents{numComponents-1}, '/', filename); %give one folder of context if possible
+    end
+    
+    if numComponents >= 3
+        filename = strcat(pathComponents{numComponents-2}, '/', filename); %give two folders of context if possible
+    end
+    
     modality = file.dicomInfo.Modality;
     date = file.date.display();
     
     currentPatient = getCurrentPatient(handles);
-    sequenceNumber = strcat(num2str(currentPatient.currentFileNum), '/', num2str(currentPatient.getNumFiles()));    
+    sequenceNumber = strcat(num2str(currentPatient.getCurrentFileNumInSeries()), '/', num2str(currentPatient.getNumFilesInSeries()));
+    
+    seriesDescription = file.getSeriesDescription();
+    studyDescription = file.getStudyDescription();
 end
 
-set(handles.imagePath, 'String', filePath);
-set(handles.modality, 'String', modality);
-set(handles.acquisitionDate, 'String', date);
 set(handles.imageSequenceNumber, 'String', sequenceNumber);
+
+set(handles.imageFilename, 'String', filename);
+set(handles.modality, 'String', modality);
+set(handles.studyDate, 'String', date);
+set(handles.seriesDescription, 'String', seriesDescription);
+set(handles.studyDescription, 'String', studyDescription);
+
 
 end
 

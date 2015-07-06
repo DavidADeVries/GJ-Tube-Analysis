@@ -36,10 +36,10 @@ if currentFile.quickMeasureOn
         handles.quickMeasureLineHandle = quickMeasureLineHandle;
         handles.quickMeasureTextLabel = textLabel;
     else %handles not empty, the elements already exist, so just update
-        if toggled %set visiblity
-            set(quickMeasureLineHandle, 'Visible', 'on');
-            quickMeasureTextLabel.setVisible('on');
-        else
+        set(quickMeasureLineHandle, 'Visible', 'on');
+        quickMeasureTextLabel.setVisible('on');
+        
+        if ~toggled
             %update them
             line = createQuickMeasureLine(quickMeasurePoints);
             [unitString, unitConversion] = currentFile.getUnitConversion();
