@@ -424,10 +424,10 @@ classdef File
             if numTubeMetrics == 0
                 tubeMetricStrings = {'',''}; %tubepoints must not be defined
             else
-                roundedMetrics = round(100 .* tubeMetrics) ./ 100;
+                roundedMetrics = round(10000 .* tubeMetrics) ./ 10000;
                 
-                tubeMetricStrings{1} = ['Average Second Derivative from Pylorus to Point C, i = ', num2str(roundedMetrics(1))];
-                tubeMetricStrings{2} = ['Average Second Derivative from Point A to Point C, j = ', num2str(roundedMetrics(2))];
+                tubeMetricStrings{1} = ['Average Curvature from Pylorus to Point C, i = ', num2str(roundedMetrics(1))];
+                tubeMetricStrings{2} = ['Average Curvature from Point A to Point C, j = ', num2str(roundedMetrics(2))];
             end
             
         end
@@ -444,40 +444,45 @@ classdef File
                 localTubePoints = getSplinePoints(file.tubePoints()); %don't want any ROI business
                 spline = getSpline(file.tubePoints());
                 
-                splineDeriv = fnder(spline, 2);
-                derivPoints = fnplt(splineDeriv)';
+                splineFirstDeriv = fnder(spline, 1);
+                firstDerivPoints = fnplt(splineFirstDeriv)';
+                
+                splineSecondDeriv = fnder(spline, 2);
+                secondDerivPoints = fnplt(splineSecondDeriv)';
                 
                 pylorusTubePointNum = getClosestTubePointNum(localMetricPoints.pylorusPoint, localTubePoints);
                 pointATubePointNum = getClosestTubePointNum(localMetricPoints.pointA, localTubePoints);
                 pointCTubePointNum = getClosestTubePointNum(localMetricPoints.pointC, localTubePoints);
                 
                 range = pylorusTubePointNum:pointCTubePointNum;
-                pylorusToCDerivPoints = derivPoints(range,:);
+                pylorusToCFirstDerivPoints = firstDerivPoints(range,:);
+                pylorusToCSecondDerivPoints = secondDerivPoints(range,:);
                                 
                 range = pointATubePointNum:pointCTubePointNum;
-                AToCDerivPoints = derivPoints(range,:);
+                AToCFirstDerivPoints = firstDerivPoints(range,:);
+                AToCSecondDerivPoints = secondDerivPoints(range,:);
                 
                 %take norm of each deriv points.
                 %these derivative are 2D because the spline is parametric,
                 %not a function
-                pylorusToCDerivNorms = zeros(length(pylorusToCDerivPoints), 1);
+                pylorusToCCurvatures = zeros(length(pylorusToCFirstDerivPoints), 1);
                 
-                for i=1:length(pylorusToCDerivPoints)
-                    pylorusToCDerivNorms(i) = norm(pylorusToCDerivPoints(i,:));
+                for i=1:length(pylorusToCFirstDerivPoints)
+                    pylorusToCCurvatures(i) = norm(pylorusToCSecondDerivPoints(i,:)) / ((1 + ((norm(pylorusToCFirstDerivPoints(i,:))) .^ 2)).^(1.5));
                 end
                 
-                AToCDerivNorms = zeros(length(AToCDerivPoints), 1);
+                AToCCurvatures = zeros(length(AToCFirstDerivPoints), 1);
                 
-                for i=1:length(AToCDerivPoints)
-                    AToCDerivNorms(i) = norm(AToCDerivPoints(i,:));
+                for i=1:length(AToCFirstDerivPoints)
+                    AToCCurvatures(i) = norm(AToCSecondDerivPoints(i,:)) / ((1 + ((norm(AToCFirstDerivPoints(i,:))) .^ 2)).^(1.5));
                 end
                 
                 %take average of the norm of the derivatives
-                pylorusToCDerivMean = mean(pylorusToCDerivNorms);
-                AToCDerivMean = mean(AToCDerivNorms);                
+                pylorusToCCurvatureMean = mean(pylorusToCCurvatures);
+                AToCCurvatureMean = mean(AToCCurvatures);                
                                 
-                tubeMetrics(1) = pylorusToCDerivMean;
-                tubeMetrics(2) = AToCDerivMean;
+                tubeMetrics(1) = pylorusToCCurvatureMean;
+                tubeMetrics(2) = AToCCurvatureMean;
             end
         end
 

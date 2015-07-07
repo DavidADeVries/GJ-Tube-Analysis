@@ -7,7 +7,7 @@ function [ ] = exportPatients(patients)
 if ~cancelled
     path = strcat(Constants.HOME_DIRECTORY, '*.csv');
     
-    fileOptions = {'*.csv','CSV Spreadsheets (*.csv)'};
+    fileOptions = {'*.csv','Comma Delimited Spreadsheets (*.csv)'};
     popupTitle = 'Export Analysis Data';
     
     if overwrite

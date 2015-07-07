@@ -56,7 +56,7 @@ classdef Date
                 dayString = strcat('0', dayString);
             end
             
-            string = strcat(monthString, '-', dayString, '-', yearString);
+            string = strcat(monthString, '/', dayString, '/', yearString);
         end
         
         function numDays = daysSinceYear0(date)
@@ -64,6 +64,48 @@ classdef Date
             epoch = cdfepoch(dateString);
             
             numDays = todatenum(epoch); %since 00/00/0000
+        end
+        
+        function string = stringForCsv(date)
+            monthString = num2str(date.month);
+            
+            switch date.month
+                case 1
+                    monthString = 'Jan';
+                case 2
+                    monthString = 'Feb';
+                case 3
+                    monthString = 'Mar';
+                case 4
+                    monthString = 'Apr';
+                case 5
+                    monthString = 'May';
+                case 6
+                    monthString = 'Jun';
+                case 7
+                    monthString = 'Jul';
+                case 8
+                    monthString = 'Aug';
+                case 9
+                    monthString = 'Sep';
+                case 10
+                    monthString = 'Oct';
+                case 11
+                    monthString = 'Nov';
+                case 12
+                    monthString = 'Dec';
+            end
+            
+            dayString = num2str(date.day);
+                        
+            if length(dayString) == 1
+                dayString = strcat('0', dayString);
+            end
+            
+            yearString = num2str(date.year);
+            yearString = yearString(3:4); %just last two digits
+            
+            string = strcat(dayString, '-', monthString, '-', yearString);
         end
     end
     

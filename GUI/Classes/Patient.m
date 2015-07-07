@@ -179,6 +179,17 @@ classdef Patient
             end
         end
         
+        %% getAllFiles %%
+        function files = getAllFiles(patient)
+            files = File.empty;
+            
+            localStudies = patient.studies;
+            
+            for i=1:length(localStudies)
+                files = [files, localStudies(i).getAllFiles()];
+            end
+        end
+        
         %% earlierImage %%
         function patient = earlierImage(patient)
             study = patient.getCurrentStudy();

@@ -2,7 +2,7 @@ classdef Constants
     %Constants stores the constants
     
     properties (Constant = true)
-        HOME_DIRECTORY = '/data/projects/GJtube/testdata/'; %make sure it's absolute and ends with '/'
+        HOME_DIRECTORY = '/data/projects/GJtube/GJ Tube Study Data/'; %make sure it's absolute and ends with '/'
         SAVE_TITLE_SUGGESTION = 'Tube Analysis';
         
         TUBE_POINT_RESOLUTION = 25;

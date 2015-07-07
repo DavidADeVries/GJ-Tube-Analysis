@@ -128,6 +128,17 @@ classdef Study
             end
         end
         
+        %% getAllFiles %%
+        function files = getAllFiles(study)
+            files = File.empty;
+            
+            localSeries = study.series;
+            
+            for i=1:length(localSeries)
+                files = [files, localSeries(i).files];
+            end
+        end
+        
         %% earlierImage %%
         function study = earlierImage(study)
             localSeries = study.getCurrentSeries();

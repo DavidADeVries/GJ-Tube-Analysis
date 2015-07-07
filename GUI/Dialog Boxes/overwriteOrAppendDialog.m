@@ -7,7 +7,7 @@ overwrite = true;
 
 question = 'Do you wish to create a new file or append to a previous file? If "Append" is chosen and a patient is in both the existing file and being exported, the existing patient data will be replaced entirely by the data from the patient in the export.';
 
-overwriteOption = 'Overwrite';
+overwriteOption = 'New/Overwrite';
 append = 'Append';
 cancel = 'Cancel';
 
