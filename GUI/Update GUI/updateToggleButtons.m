@@ -73,9 +73,7 @@ if ~isempty(currentPatient) %add in patient operations
             if ~isempty(currentFile) %add in file operations
                 % on no matter what state currentFile is in
                 set(handles.removeFile, 'Enable', 'on');
-                set(handles.zoomIn, 'Enable', 'on');
-                set(handles.zoomOut, 'Enable', 'on');
-                set(handles.pan, 'Enable', 'on');
+                
                 set(handles.selectContrast, 'Enable', 'on');
                 set(handles.selectRoi, 'Enable', 'on');
                 set(handles.selectWaypoints, 'Enable', 'on');
@@ -85,9 +83,7 @@ if ~isempty(currentPatient) %add in patient operations
                 set(handles.quickMeasure, 'Enable', 'on');
                 
                 set(handles.menuRemoveFile, 'Enable', 'on');
-                %     set(handles.menuzoomIn, 'Enable', 'on');
-                %     set(handles.menuzoomOut, 'Enable', 'on');
-                %     set(handles.menupan, 'Enable', 'on');
+                
                 set(handles.menuSelectContrast, 'Enable', 'on');
                 set(handles.menuSelectRoi, 'Enable', 'on');
                 set(handles.menuSelectWaypoints, 'Enable', 'on');
@@ -233,11 +229,17 @@ if ~isempty(currentPatient) %add in patient operations
                 if currentPatient.getCurrentFileNumInSeries() ~= 1
                     set(handles.earlierImage, 'Enable', 'on');
                     set(handles.earliestImage, 'Enable', 'on');
+                    
+                    set(handles.menuEarlierImage, 'Enable', 'on');
+                    set(handles.menuEarliestImage, 'Enable', 'on');
                 end
                 
                 if currentPatient.getCurrentFileNumInSeries() ~= currentPatient.getNumFilesInSeries()
                     set(handles.laterImage, 'Enable', 'on');
                     set(handles.latestImage, 'Enable', 'on');
+                    
+                    set(handles.menuLaterImage, 'Enable', 'on');
+                    set(handles.menuLatestImage, 'Enable', 'on');
                 end
             end
         end

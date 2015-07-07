@@ -34,7 +34,7 @@ rmpath('./Old Stuff [Delete]'); %ignore old files
 
 % Edit the above text to modify the response to help GJ_Tube
 
-% Last Modified by GUIDE v2.5 06-Jul-2015 11:42:15
+% Last Modified by GUIDE v2.5 07-Jul-2015 14:59:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1816,6 +1816,38 @@ function menuRemoveFile_Callback(hObject, eventdata, handles)
 removeFile_ClickedCallback(hObject, eventdata, handles);
 
 
+% --------------------------------------------------------------------
+function menuEarlierImage_Callback(hObject, eventdata, handles)
+% hObject    handle to menuEarlierImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+earlierImage_ClickedCallback(hObject, eventdata, handles);
+
+% --------------------------------------------------------------------
+function menuLaterImage_Callback(hObject, eventdata, handles)
+% hObject    handle to menuLaterImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+laterImage_ClickedCallback(hObject, eventdata, handles);
+
+% --------------------------------------------------------------------
+function menuEarliestImage_Callback(hObject, eventdata, handles)
+% hObject    handle to menuEarliestImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+earliestImage_ClickedCallback(hObject, eventdata, handles);
+
+% --------------------------------------------------------------------
+function menuLatestImage_Callback(hObject, eventdata, handles)
+% hObject    handle to menuLatestImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+latestImage_ClickedCallback(hObject, eventdata, handles);
+
 % MENU EDIT CALLBACKS
 
 % --------------------------------------------------------------------
@@ -2189,5 +2221,7 @@ function angularRes_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
 
 
