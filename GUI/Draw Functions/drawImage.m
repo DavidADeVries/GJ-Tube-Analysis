@@ -10,21 +10,7 @@ axes(handles.imageAxes);
 imshow(image,cLim);
 
 %clear all other handles because imshow killed everything
-handles.waypointHandles = impoint.empty;
-handles.displayTube = DisplayTube.empty;
-handles.metricLineTextLabels = TextLabel.empty;
-handles.metricLineDisplayLines = DisplayLine.empty;
-handles.metricPointHandles = impoint.empty;
-handles.metricPointTextLabels = TextLabel.empty;
-handles.refLineHandle = imline.empty;
-handles.midlineHandle = imline.empty;
-handles.quickMeasureLineHandle = imline.empty;
-handles.quickMeasureTextLabel = TextLabel.empty;
-handles.tubePointHandles = impoint.empty;
-
-handles.longitudinalDisplayTubes = LongitudinalDisplayTube.empty;
-handles.deltaLineTextLabels = TextLabel.empty;
-handles.deltaLineDisplayLines = DisplayLine.empty;
+handles = emptyDisplayHandles(handles);
 
 end
 

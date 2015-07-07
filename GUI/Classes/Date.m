@@ -105,7 +105,7 @@ classdef Date
             yearString = num2str(date.year);
             yearString = yearString(3:4); %just last two digits
             
-            string = strcat(dayString, '-', monthString, '-', yearString);
+            string = strcat(dayString, '-', monthString, '-', yearString); %this format allows excel to pick the text up as a date
         end
     end
     
