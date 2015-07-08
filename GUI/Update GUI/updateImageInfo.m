@@ -28,7 +28,7 @@ end
 
 set(handles.imageSequenceNumber, 'String', sequenceNumber);
 
-set(handles.imageFilename, 'String', filename);
+set(handles.filename, 'String', filename);
 set(handles.modality, 'String', modality);
 set(handles.studyDate, 'String', date);
 set(handles.seriesDescription, 'String', seriesDescription);
