@@ -91,15 +91,6 @@ set(handles.menuEarlierImage, 'Enable', 'off');
 set(handles.menuLaterImage, 'Enable', 'off');
 set(handles.menuLatestImage, 'Enable', 'off');
 
-% set(handles.menuEarliestImage, 'Enable', 'off');
-% set(handles.menuearlierImage, 'Enable', 'off');
-% set(handles.menulaterImage, 'Enable', 'off');
-% set(handles.menulatestImage, 'Enable', 'off');
-
-% set(handles.menuZoomIn, 'Enable', 'off');
-% set(handles.menuZoomOut, 'Enable', 'off');
-% set(handles.menuPan, 'Enable', 'off');
-
 set(handles.menuSelectContrast, 'Enable', 'off');
 set(handles.menuSelectRoi, 'Enable', 'off');
 set(handles.menuSelectWaypoints, 'Enable', 'off');

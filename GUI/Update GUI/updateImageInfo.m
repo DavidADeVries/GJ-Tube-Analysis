@@ -14,23 +14,7 @@ if isempty(file)
     seriesDescription = na;
     studyDescription = na;
 else
-    path = file.dicomInfo.Filename;
-    pathComponents = strsplit(path,'/');
-    numComponents = length(pathComponents);
-    
-    filename = '';
-    
-    if numComponents >= 1
-        filename = pathComponents{numComponents}; %actual filename
-    end
-    
-    if numComponents >= 2
-        filename = strcat(pathComponents{numComponents-1}, '/', filename); %give one folder of context if possible
-    end
-    
-    if numComponents >= 3
-        filename = strcat(pathComponents{numComponents-2}, '/', filename); %give two folders of context if possible
-    end
+    filename = file.name;
     
     modality = file.dicomInfo.Modality;
     date = file.date.display();

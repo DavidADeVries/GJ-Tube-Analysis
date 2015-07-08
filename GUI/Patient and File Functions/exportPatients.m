@@ -5,7 +5,7 @@ function [ ] = exportPatients(patients)
 [cancelled, overwrite] = overwriteOrAppendDialog(); %user can choose to overwrite file or append to it
 
 if ~cancelled
-    path = strcat(Constants.HOME_DIRECTORY, '*.csv');
+    path = strcat(Constants.CSV_EXPORT_DIRECTORY, '*.csv');
     
     fileOptions = {'*.csv','Comma Delimited Spreadsheets (*.csv)'};
     popupTitle = 'Export Analysis Data';

@@ -27,13 +27,10 @@ if ~isempty(currentPatient) %add in patient operations
         set(handles.menuSavePatient, 'Enable', 'on');        
     end
     
-    set(handles.open, 'Enable', 'on');
     set(handles.saveAll, 'Enable', 'on');
     set(handles.exportPatient, 'Enable', 'on');
     set(handles.exportAllPatients, 'Enable', 'on');
     
-    set(handles.importPatientDirectory, 'Enable', 'on');
-    set(handles.addPatient, 'Enable', 'on');
     set(handles.addStudy, 'Enable', 'on');
     set(handles.closePatient, 'Enable', 'on');
     set(handles.closeAllPatients, 'Enable', 'on');

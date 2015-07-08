@@ -114,7 +114,7 @@ function open_ClickedCallback(hObject, eventdata, handles)
 allowedFileOptions = {...
     '*.mat','Patient Analysis Files (*.mat)'};
 popupTitle = 'Select Patient Analysis Files';
-startingDirectory = Constants.HOME_DIRECTORY;
+startingDirectory = Constants.SAVED_PATIENTS_DIRECTORY;
 
 [imageFilename, imagePath, ~] = uigetfile(allowedFileOptions, popupTitle, startingDirectory);
 
@@ -1469,7 +1469,7 @@ function addFile_ClickedCallback(hObject, eventdata, handles)
 allowedFileOptions = {...
     '*.dcm','DICOM Files (*.dcm)'};
 popupTitle = 'Select Image';
-startingDirectory = Constants.HOME_DIRECTORY;
+startingDirectory = Constants.RAW_DATA_DIRECTORY;
 
 [imageFilename, imagePath, ~] = uigetfile(allowedFileOptions, popupTitle, startingDirectory);
 
@@ -1611,7 +1611,7 @@ function importPatientDirectory_ClickedCallback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-folderPath = uigetdir(Constants.HOME_DIRECTORY, 'Select Patient Directory');
+folderPath = uigetdir(Constants.RAW_DATA_DIRECTORY, 'Select Patient Directory');
 
 if folderPath ~= 0 %didn't click cancel
     waitHandle = pleaseWaitDialog('importing directory.');

@@ -307,7 +307,7 @@ classdef Patient
             %saveToDisk saves the patient's data and open files to the disk
             if isempty(patient.savePath)
                 filename = strcat(Constants.SAVE_TITLE_SUGGESTION, {' '}, num2str(patient.patientId), '.mat');
-                path = strcat(Constants.HOME_DIRECTORY, filename);
+                path = strcat(Constants.SAVED_PATIENTS_DIRECTORY, filename);
                 
                 [saveFilename, savePathname] = uiputfile(path,'Save Patient');
                 
