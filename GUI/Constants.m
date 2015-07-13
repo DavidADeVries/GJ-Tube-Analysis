@@ -2,6 +2,15 @@ classdef Constants
     %Constants stores the constants
     
     properties (Constant = true)
+        % for dev
+        GIANT_PATH = '/data/projects/General Image Analysis Toolkit/metadata/';
+        
+        % for released
+        %GIANT_PATH = '/data/projects/General Image Analysis Toolkit/Current Release/';
+        
+        
+        
+        
         SAVED_PATIENTS_DIRECTORY = '/data/projects/GJ Tube/GJ Tube Study/Saved Patient Analysis/'; %make sure it's absolute and ends with '/'
         RAW_DATA_DIRECTORY = '/data/projects/GJ Tube/GJ Tube Study/Raw Data/';
         CSV_EXPORT_DIRECTORY = '/data/projects/GJ Tube/GJ Tube Study/Exported Spreadsheets/';
