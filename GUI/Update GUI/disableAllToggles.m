@@ -2,37 +2,22 @@ function [ ] = disableAllToggles( handles )
 %disableAllToggles used when no patients are open to just lock everything
 %down
 
-set(handles.patientSelector, 'Enable', 'off');
+disableAllGiantToggleButtons(handles);
 
-set(handles.open, 'Enable', 'off');
-set(handles.savePatient, 'Enable', 'off');
-set(handles.saveAll, 'Enable', 'off');
-set(handles.exportPatient, 'Enable', 'off');
-set(handles.exportAllPatients, 'Enable', 'off');
-set(handles.addPatient, 'Enable', 'off');
-set(handles.addFile, 'Enable', 'off');
-set(handles.closePatient, 'Enable', 'off');
-set(handles.closeAllPatients, 'Enable', 'off');
-set(handles.removeFile, 'Enable', 'off');
-set(handles.undo, 'Enable', 'off');
-set(handles.redo, 'Enable', 'off');
-set(handles.earliestImage, 'Enable', 'off');
-set(handles.earlierImage, 'Enable', 'off');
-set(handles.laterImage, 'Enable', 'off');
-set(handles.latestImage, 'Enable', 'off');
-set(handles.zoomIn, 'Enable', 'off');
-set(handles.zoomOut, 'Enable', 'off');
-set(handles.pan, 'Enable', 'off');
+%toolbar options
+
 set(handles.selectContrast, 'Enable', 'off');
 set(handles.selectRoi, 'Enable', 'off');
 set(handles.selectWaypoints, 'Enable', 'off');
 set(handles.segmentTube, 'Enable', 'off');
+set(handles.manualSegmentTube, 'Enable', 'off');
 set(handles.tuneTube, 'Enable', 'off');
 set(handles.selectReference, 'Enable', 'off');
 set(handles.selectMidline, 'Enable', 'off');
 set(handles.calcMetrics, 'Enable', 'off');
 set(handles.calcLongitudinal, 'Enable', 'off');
 set(handles.quickMeasure, 'Enable', 'off');
+
 set(handles.toggleContrast, 'Enable', 'off');
 set(handles.toggleRoi, 'Enable', 'off');
 set(handles.toggleWaypoints, 'Enable', 'off');
@@ -57,30 +42,13 @@ set(handles.toggleQuickMeasure, 'State', 'off');
 set(handles.generalAccept, 'Visible', 'off');
 set(handles.generalDecline, 'Visible', 'off');
 
-set(handles.menuOpen, 'Enable', 'off');
-set(handles.menuSavePatient, 'Enable', 'off');
-set(handles.menuSavePatientAs, 'Enable', 'off');
-set(handles.menuSaveAll, 'Enable', 'off');
-set(handles.menuExportPatient, 'Enable', 'off');
-set(handles.menuExportAllPatients, 'Enable', 'off');
-set(handles.menuAddPatient, 'Enable', 'off');
-set(handles.menuAddFile, 'Enable', 'off');
-set(handles.menuClosePatient, 'Enable', 'off');
-set(handles.menuCloseAllPatients, 'Enable', 'off');
-set(handles.menuRemoveFile, 'Enable', 'off');
-set(handles.menuUndo, 'Enable', 'off');
-set(handles.menuRedo, 'Enable', 'off');
-% set(handles.menuEarliestImage, 'Enable', 'off');
-% set(handles.menuearlierImage, 'Enable', 'off');
-% set(handles.menulaterImage, 'Enable', 'off');
-% set(handles.menulatestImage, 'Enable', 'off');
-% set(handles.menuZoomIn, 'Enable', 'off');
-% set(handles.menuZoomOut, 'Enable', 'off');
-% set(handles.menuPan, 'Enable', 'off');
+%menu options
+
 set(handles.menuSelectContrast, 'Enable', 'off');
 set(handles.menuSelectRoi, 'Enable', 'off');
 set(handles.menuSelectWaypoints, 'Enable', 'off');
 set(handles.menuSegmentTube, 'Enable', 'off');
+set(handles.menuManualSegmentTube, 'Enable', 'off');
 set(handles.menuTuneTube, 'Enable', 'off');
 set(handles.menuSelectReference, 'Enable', 'off');
 set(handles.menuSelectMidline, 'Enable', 'off');

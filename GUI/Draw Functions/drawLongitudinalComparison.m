@@ -13,6 +13,7 @@ if currentPatient.longitudinalOn
     baseRefPoints = currentFile.refPoints;
     longitudinalFileNumbers = currentPatient.getLongitudinalDisplayFileNumbers();
     numTubes = length(longitudinalFileNumbers);
+    
     if isempty(longitudinalDisplayTubes) || isempty(deltaLineDisplayLines) || isempty(deltaLineTextLabels) %create new
         %constants
         
@@ -55,7 +56,9 @@ if currentPatient.longitudinalOn
             
             transform = getTransform(shift, scale, angleShift, angle);
             
-            [x,y] = transformPointsForward(transform, file.tubePoints(:,1), file.tubePoints(:,2));
+            tubePoints = file.getSplinePoints();
+            
+            [x,y] = transformPointsForward(transform, tubePoints(:,2), tubePoints(:,2));
             
             transformTubePoints = [x,y];
             

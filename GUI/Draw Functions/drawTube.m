@@ -3,7 +3,7 @@ function [ handles ] = drawTube(currentFile, handles, toggled)
 
 displayTube = handles.displayTube;
 
-tubePoints = currentFile.getTubePoints();
+displayTubePoints = currentFile.getDisplayTubePoints();
 
 if currentFile.tubeOn
     if isempty(displayTube) %create new
@@ -15,14 +15,14 @@ if currentFile.tubeOn
         borderWidth = Constants.TUBE_BORDER_WIDTH;
         
         % plots tube and create DisplayTube object
-        handles.displayTube = DisplayTube(tubePoints, style, lineWidth, borderWidth, borderColour, baseColour);
+        handles.displayTube = DisplayTube(displayTubePoints, style, lineWidth, borderWidth, borderColour, baseColour);
     else %handles not empty, the elements already exist, so just update
         if toggled %just set visiblity
             displayTube.setVisible('on');
         end
         
         %update them
-        displayTube.update(tubePoints);
+        displayTube.update(displayTubePoints);
     end
 else %turn it off
     if ~isempty(displayTube) %if the objects exist, turn them off
