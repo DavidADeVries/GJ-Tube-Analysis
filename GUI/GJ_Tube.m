@@ -6,11 +6,12 @@ addpath('../CircStat2012a');
 addpath('../arrow');
 addpath('../MATLAB Image Functions');
 addpath('../Peter Kovesi Computer Vision Libraries/Feature Detection');
-addpath(genpath('/data/projects/General Image Analysis Toolkit/Current Release/GIANT Code'));
-addpath('/data/projects/General Image Analysis Toolkit/Current Release/Common Module Functions/Quick Measure');
-addpath('/data/projects/General Image Analysis Toolkit/Current Release/Common Module Functions/Plot Impoint');
 
 addpath(genpath('.')); %add all subfolders in the current directory
+
+addpath(genpath(strcat(Constants.GIANT_PATH, 'GIANT Code')));
+addpath(strcat(Constants.GIANT_PATH, 'Common Module Functions/Quick Measure'));
+addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Plot Impoint'));
 
 % GJ_TUBE MATLAB code for GJ_Tube.fig
 %      GJ_TUBE, by itself, creates a new GJ_TUBE or raises the existing
