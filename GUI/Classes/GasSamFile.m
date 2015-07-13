@@ -1,4 +1,4 @@
-classdef GJTubeFile < File
+classdef GasSamFile < File
     %file represents an open DICOM file
     
     properties
@@ -29,9 +29,9 @@ classdef GJTubeFile < File
     
     methods
         %% Constructor %%
-        function gjTubeFile = GJTubeFile(name, dicomInfo, dicomImage, originalLimits)
-            gjTubeFile@File(name, dicomInfo, dicomImage);
-            gjTubeFile.originalLimits = originalLimits;
+        function gasSamFile = GasSamFile(name, dicomInfo, dicomImage, originalLimits)
+            gasSamFile@File(name, dicomInfo, dicomImage);
+            gasSamFile.originalLimits = originalLimits;
         end
         
         %% setWaypoints %%
@@ -239,6 +239,13 @@ classdef GJTubeFile < File
             end
             
         end
+        
+        %% isValidForExport %%
+        % ** required for GIANT **
+        function isValid = isValidForExport(file)
+            isValid = ~(isempty(file.metricPoints) || isempty(file.refPoints) || isempty(file.midlinePoints));
+        end
+        
         
         %% isValidForLongitudinal %%
         function [isValid] = isValidForLongitudinal(file)

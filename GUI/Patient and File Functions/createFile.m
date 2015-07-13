@@ -4,7 +4,7 @@ function [ file ] = createFile(imageFilename, dicomInfo, dicomImage )
 
 originalLimits = [min(min(dicomImage)), max(max(dicomImage))];
 
-file = GJTubeFile(imageFilename, dicomInfo, dicomImage, originalLimits);
+file = GasSamFile(imageFilename, dicomInfo, dicomImage, originalLimits);
 
 
 end

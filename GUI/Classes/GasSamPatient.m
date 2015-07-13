@@ -1,4 +1,4 @@
-classdef GJTubePatient < Patient
+classdef GasSamPatient < Patient
     %Patient a patient contains a list of (DICOM) Files, in order from
     %earliest to latest
     
@@ -9,8 +9,8 @@ classdef GJTubePatient < Patient
     
     methods
         %% Constructor %%
-        function patient = GJTubePatient(patientId, studies)
-            patient@Patient(patientId, studies);
+        function gasSamPatient = GasSamPatient(patientId, studies)
+            gasSamPatient@Patient(patientId, studies);
         end
                
         
