@@ -6,8 +6,9 @@ numWaypoints = length(waypoints);
 dims = size(image);
 
 %[~, ~, ~, ft, ~, ~, ~] = phasecong3(double(image));
+[j,~,~] = FrangiFilter2D(image);
 
-%image = ft;
+image = j;
 
 tubePoints = [];
 waypointPassbys = [];
@@ -44,7 +45,7 @@ numPassbys = 0;
 
 maxIters = 1000;
 
-horizonRes = 0.5;
+horizonRes = 1;
 
 image = double(image);
 
@@ -101,17 +102,17 @@ while curPriorNum <= numWaypoints && numTubePoints < maxIters
 %     plot(abs(interpolValues - curInterpolValue));
 %     pause;
         
-    [point,correction,priorUsed] = findOptimumPoint2( interpolValues, interpolConstrain, curveConstrain, priorConstrain, curPoint, searchAngle, angularRes, vectorAngle, radius, latestCorrections, waypoints(curPriorNum,:) );
+    [point,correction,~] = findOptimumPoint2( interpolValues, interpolConstrain, curveConstrain, priorConstrain, curPoint, searchAngle, angularRes, vectorAngle, radius, latestCorrections, waypoints(curPriorNum,:) );
     
     latestCorrections(2:correctionMemory) = latestCorrections(1:correctionMemory-1);
     latestCorrections(1) = correction;
     
-    if priorUsed %TODO: this kind of feels like a dirty hack...
-        curPriorNum = curPriorNum + 1;
-
-        numPassbys = numPassbys + 1;
-        waypointPassbys(numPassbys,:) = point;
-    end
+%     if priorUsed %TODO: this kind of feels like a dirty hack...
+%         curPriorNum = curPriorNum + 1;
+% 
+%         numPassbys = numPassbys + 1;
+%         waypointPassbys(numPassbys,:) = point;
+%     end
     
     
     lastPoint = curPoint;

@@ -326,7 +326,7 @@ classdef GasSamFile < File
             if numTubeMetrics == 0
                 tubeMetricStrings = {'',''}; %tubepoints must not be defined
             else
-                roundedMetrics = round(10 .* tubeMetrics) ./ 10;
+                roundedMetrics = round(10000 .* tubeMetrics) ./ 10000;
                 
                 tubeMetricStrings{1} = ['Average Curvature from Pylorus to Point C, i = ', num2str(roundedMetrics(1))];
                 tubeMetricStrings{2} = ['Average Curvature from Point A to Point C, j = ', num2str(roundedMetrics(2))];
@@ -381,12 +381,10 @@ classdef GasSamFile < File
                 
                 %take average of the norm of the derivatives
                 pylorusToCCurvatureMean = mean(pylorusToCCurvatures);
-                AToCCurvatureMean = mean(AToCCurvatures);       
-                
-                rescalingFactor = 10000; %to eliminate small decimal values
+                AToCCurvatureMean = mean(AToCCurvatures);                
                                 
-                tubeMetrics(1) = pylorusToCCurvatureMean * rescalingFactor;
-                tubeMetrics(2) = AToCCurvatureMean * rescalingFactor;
+                tubeMetrics(1) = pylorusToCCurvatureMean * 100;
+                tubeMetrics(2) = AToCCurvatureMean;
             end
         end
 

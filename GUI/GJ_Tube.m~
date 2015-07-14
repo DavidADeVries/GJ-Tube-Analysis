@@ -726,12 +726,12 @@ else
     
     % delete tube points and metric lines
     handles = deleteTube(handles);
+    
+    updateToggleButtons(handles);
+    
+    % push up the changes
+    guidata(hObject, handles);
 end
-
-updateToggleButtons(handles);
-
-% push up the changes
-guidata(hObject, handles);
 
 
 
