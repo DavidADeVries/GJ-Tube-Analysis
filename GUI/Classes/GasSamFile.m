@@ -130,14 +130,22 @@ classdef GasSamFile < File
             
             % STEP 4: Get the tube points based upon this resolution from the initial
             % spline            
-            numPoints = floor(height(initSplinePoints)/res);
+            numPoints = floor(height(initSplinePoints)/res) + 1; %plus one to make room for the first point
             
+            numSplinePoints = height(initSplinePoints);
+                        
             localTubePoints = zeros(numPoints, 2);
             
-            for i=1:height(initSplinePoints)
+            localTubePoints(1,:) = initSplinePoints(1,:); % for sure include first point
+            
+            for i=1:numSplinePoints
                 if mod(i,res) == 0
-                    localTubePoints(i/res,:) = initSplinePoints(i,:);
+                    localTubePoints((i/res) + 1, :) = initSplinePoints(i, :);
                 end
+            end
+            
+            if mod(numSplinePoints, res) ~= 0 %add in last point if it's not already included
+                localTubePoints(numPoints + 1, :) = initSplinePoints(numSplinePoints, :);
             end
             
             file = file.setTubePoints(localTubePoints);
@@ -318,7 +326,7 @@ classdef GasSamFile < File
             if numTubeMetrics == 0
                 tubeMetricStrings = {'',''}; %tubepoints must not be defined
             else
-                roundedMetrics = round(10000 .* tubeMetrics) ./ 10000;
+                roundedMetrics = round(10 .* tubeMetrics) ./ 10;
                 
                 tubeMetricStrings{1} = ['Average Curvature from Pylorus to Point C, i = ', num2str(roundedMetrics(1))];
                 tubeMetricStrings{2} = ['Average Curvature from Point A to Point C, j = ', num2str(roundedMetrics(2))];
@@ -373,10 +381,12 @@ classdef GasSamFile < File
                 
                 %take average of the norm of the derivatives
                 pylorusToCCurvatureMean = mean(pylorusToCCurvatures);
-                AToCCurvatureMean = mean(AToCCurvatures);                
+                AToCCurvatureMean = mean(AToCCurvatures);       
+                
+                rescalingFactor = 10000; %to eliminate small decimal values
                                 
-                tubeMetrics(1) = pylorusToCCurvatureMean;
-                tubeMetrics(2) = AToCCurvatureMean;
+                tubeMetrics(1) = pylorusToCCurvatureMean * rescalingFactor;
+                tubeMetrics(2) = AToCCurvatureMean * rescalingFactor;
             end
         end
 

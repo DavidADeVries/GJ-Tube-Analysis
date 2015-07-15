@@ -45,9 +45,9 @@ if ((vectorAngle + searchAngle) > angleToPrior && (vectorAngle - searchAngle) < 
     end
 end
 
-if distanceFromPrior < 2*radius
-   priorUsed = true; 
-end
+% if distanceFromPrior < 2*radius
+%    priorUsed = true; 
+% end
 
 
 %normalize
@@ -61,23 +61,23 @@ curveValues = curveValues ./ checkZero(max(curveValues));
 
 decisionValues = (interpolConstrain.*interpolValues) + (curveConstrain.*curveValues) + (priorConstrain.*priorValues);
 
-numPoints = ((searchAngle * 2)/angularResolution)+1;
-x = (1:numPoints)';
-
-poly = polyfit(x,decisionValues,2);
-
-a = poly(1);
-b = poly(2);
-
-if a <= 0 %something went screwy! Plough on!
-    correctionAngle = 0;
-else
-    minX = -b/(2*a);
+% numPoints = ((searchAngle * 2)/angularResolution)+1;
+% x = (1:numPoints)';
+% 
+% poly = polyfit(x,decisionValues,2);
+% 
+% a = poly(1);
+% b = poly(2);
+% 
+% if a <= 0 %something went screwy! Plough on!
+%     correctionAngle = 0;
+% else
+%     minX = -b/(2*a);
+% %     
+% %     disp(minX);
 %     
-%     disp(minX);
-    
-    correctionAngle = mod(minX*angularResolution - (searchAngle+1),  360);
-end
+%     correctionAngle = mod(minX*angularResolution - (searchAngle+1),  360);
+% end
 
 % disp(searchAngle);
 % disp(correctionAngle);
@@ -87,15 +87,17 @@ end
 % figure(1);
 % plot(x,polyY,'r--');
 
-% 
-% [~,I] = sort(decisionValues); %get lowest values
-% 
-% correctionAngle = mod(mean(I(1:5))*angularResolution - searchAngle,  360);
+
+[~,I] = sort(decisionValues); %get lowest values
+
+correctionAngle = mod(mean(I(1:5))*angularResolution - searchAngle,  360);
 
 
 [x,y] = findXY(curPoint, vectorAngle + correctionAngle, radius);
 
 point = [x,y];
+
+disp('Point');
 
 end
 

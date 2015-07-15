@@ -2,7 +2,7 @@ function varargout = GJ_Tube(varargin)
 
 % add needed librarys
 
-addpath('../CircStat2012a');
+addpath('../Vesselness Enhancement');
 addpath('../arrow');
 addpath('../MATLAB Image Functions');
 addpath('../Peter Kovesi Computer Vision Libraries/Feature Detection');
@@ -696,30 +696,44 @@ handles = deleteWaypoints(handles);
 
 waypoints = [x,y];
 
-currentFile = currentFile.setWaypoints(waypoints);
-currentFile.waypointsOn = true;
-
-currentFile.tubePoints = [];
-currentFile.tubeOn = false;
-
-% finalize changes
-updateUndo = true;
-pendingChanges = true; 
-handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
-
-% update display
-toggled = false;
-draggable = false;
-
-handles = drawWaypoints(currentFile, handles, toggled, draggable);
-
-% delete tube points and metric lines
-handles = deleteTube(handles);
+if height(waypoints) < 2
+    title = 'Waypoint Selection Error';
+    message = 'More than one waypoint must be selected!';
+    
+    msgbox(message, title);
+    
+    % finalize changes
+    updateUndo = true;
+    pendingChanges = true;
+    handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
+else
+    currentFile = currentFile.setWaypoints(waypoints);
+    currentFile.waypointsOn = true;
+    
+    currentFile.tubePoints = [];
+    currentFile.tubeOn = false;
+    
+    % finalize changes
+    updateUndo = true;
+    pendingChanges = true;
+    handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
+    
+    % update display
+    toggled = false;
+    draggable = false;
+    
+    handles = drawWaypoints(currentFile, handles, toggled, draggable);
+    
+    % delete tube points and metric lines
+    handles = deleteTube(handles);
+end
 
 updateToggleButtons(handles);
 
 % push up the changes
 guidata(hObject, handles);
+
+
 
 % --------------------------------------------------------------------
 function segmentTube_ClickedCallback(hObject, eventdata, handles)
@@ -731,34 +745,49 @@ currentFile = getCurrentFile(handles);
 
 image = currentFile.getAdjustedImage();
 
-interpolConstrain = str2double(get(handles.interpolConstrain, 'String'));
-priorConstrain = str2double(get(handles.priorConstrain, 'String'));
-curveConstrain = str2double(get(handles.curveConstrain, 'String'));
-radius = str2double(get(handles.radius, 'String'));
+stepRadius = str2double(get(handles.stepRadius, 'String'));
 searchAngle = str2double(get(handles.searchAngle, 'String'));
-width = str2double(get(handles.width, 'String'));
+searchRadius = str2double(get(handles.searchRadius, 'String'));
 angularRes = str2double(get(handles.angularRes, 'String'));
 
 waypoints = currentFile.getWaypoints();
 
-[rawTubePoints, ~] = pathFinder(image, waypoints, interpolConstrain, priorConstrain, curveConstrain, radius, searchAngle, width, angularRes);
+waitHandle = pleaseWaitDialog('segmenting tube.');
 
-currentFile.tubeOn = true;
+[rawTubePoints, numTubes] = pathFinder3(image, waypoints, stepRadius, searchAngle, searchRadius, angularRes);
 
-currentFile = currentFile.setTubePointsFromRaw(rawTubePoints);
+delete(waitHandle); 
 
-% finalize changes
-updateUndo = true;
-pendingChanges = true; 
-handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
-
-% update display
-handles = drawAll(currentFile, handles, hObject); %layering is usually screwed up by this point, so we fix it by redrawing everything
-
-updateToggleButtons(handles);
-
-% push up the changes
-guidata(hObject, handles);
+if numTubes == 0
+    title = 'Tube Segmentation Error';
+    message = 'No tubes were found matching your current waypoints. Please redefine waypoints or perform manual segmentation.';
+    
+    msgbox(message, title);       
+elseif numTubes > 1
+    title = 'Tube Segmentation Error';
+    message = 'Multiple tubes were found matching your current waypoints. Please redefine waypoints to define a unique path or perform manual segmentation.';
+    
+    msgbox(message, title);   
+else
+    currentFile.tubeOn = true;
+    currentFile.metricPoints = MetricPoints.empty;
+    currentFile.metricsOn = false;
+    
+    currentFile = currentFile.setTubePointsFromRaw(rawTubePoints);
+    
+    % finalize changes
+    updateUndo = true;
+    pendingChanges = true;
+    handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
+    
+    % update display
+    handles = drawAll(currentFile, handles, hObject); %layering is usually screwed up by this point, so we fix it by redrawing everything
+    
+    updateToggleButtons(handles);
+    
+    % push up the changes
+    guidata(hObject, handles);
+end
 
 % --------------------------------------------------------------------
 function tuneTube_ClickedCallback(hObject, eventdata, handles)
@@ -1540,51 +1569,12 @@ toggleLongitudinal_ClickedCallback(hObject, eventdata, handles);
 
 
 
+% Segmentation Parameter Create Fcns
 
-
-
-
-
-
-
-
-
-% Segmentation Parameters Callbacks
-
-function interpolConstrain_Callback(hObject, eventdata, handles)
-% hObject    handle to interpolConstrain (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of interpolConstrain as text
-%        str2double(get(hObject,'String')) returns contents of interpolConstrain as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function interpolConstrain_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to interpolConstrain (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function priorConstrain_Callback(hObject, eventdata, handles)
-% hObject    handle to priorConstrain (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of priorConstrain as text
-%        str2double(get(hObject,'String')) returns contents of priorConstrain as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function priorConstrain_CreateFcn(hObject, eventdata, handles)
+function stepRadius_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to priorConstrain (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -1594,90 +1584,10 @@ function priorConstrain_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-
-function curveConstrain_Callback(hObject, eventdata, handles) %#ok<*INUSD>
-% hObject    handle to curveConstrain (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of curveConstrain as text
-%        str2double(get(hObject,'String')) returns contents of curveConstrain as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function curveConstrain_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to curveConstrain (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function width_Callback(hObject, eventdata, handles)
-% hObject    handle to width (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of width as text
-%        str2double(get(hObject,'String')) returns contents of width as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function width_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to width (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function radius_Callback(hObject, eventdata, handles)
-% hObject    handle to radius (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of radius as text
-%        str2double(get(hObject,'String')) returns contents of radius as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function radius_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to radius (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function searchAngle_Callback(hObject, eventdata, handles)
-% hObject    handle to searchAngle (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of searchAngle as text
-%        str2double(get(hObject,'String')) returns contents of searchAngle as a double
-
 
 % --- Executes during object creation, after setting all properties.
 function searchAngle_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to searchAngle (see GCBO)
+% hObject    handle to priorConstrain (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1687,19 +1597,21 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-function angularRes_Callback(hObject, eventdata, handles)
-% hObject    handle to angularRes (see GCBO)
+% --- Executes during object creation, after setting all properties.
+function searchRadius_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to priorConstrain (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+% handles    empty - handles not created until after all CreateFcns called
 
-% Hints: get(hObject,'String') returns contents of angularRes as text
-%        str2double(get(hObject,'String')) returns contents of angularRes as a double
-
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 % --- Executes during object creation, after setting all properties.
 function angularRes_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to angularRes (see GCBO)
+% hObject    handle to priorConstrain (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1709,6 +1621,26 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+% --- Executes during object creation, after setting all properties.
+function width_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to priorConstrain (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
 
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
+% --- Executes during object creation, after setting all properties.
+function radius_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to priorConstrain (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
 
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

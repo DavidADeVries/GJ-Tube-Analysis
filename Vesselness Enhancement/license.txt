@@ -1,4 +1,4 @@
-Copyright (c) 2011, Philipp Berens
+Copyright (c) 2009, Dirk-Jan Kroon
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
