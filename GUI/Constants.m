@@ -3,10 +3,10 @@ classdef Constants
     
     properties (Constant = true)
         % for dev
-        GIANT_PATH = '/data/projects/General Image Analysis Toolkit/metadata/';
+        GIANT_PATH = '/data/projects/General Image Analysis Toolkit/GIANT/metadata/';
         
         % for released
-        %GIANT_PATH = '/data/projects/General Image Analysis Toolkit/Current Release/';
+        %GIANT_PATH = '/data/projects/General Image Analysis Toolkit/Current Release/metadata/';
         
         
         
