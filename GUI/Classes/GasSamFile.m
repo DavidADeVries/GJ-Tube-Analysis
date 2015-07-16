@@ -29,9 +29,12 @@ classdef GasSamFile < File
     
     methods
         %% Constructor %%
-        function gasSamFile = GasSamFile(name, dicomInfo, dicomImage, originalLimits)
-            gasSamFile@File(name, dicomInfo, dicomImage);
-            gasSamFile.originalLimits = originalLimits;
+        function gasSamFile = GasSamFile(name, dicomInfo, imagePath)
+            gasSamFile@File(name, dicomInfo, imagePath);
+            
+            image = double(dicomread(imagePath));
+            
+            gasSamFile.originalLimits = [min(min(image)), max(max(image))];
         end
         
         %% setWaypoints %%
@@ -200,40 +203,40 @@ classdef GasSamFile < File
         
         %% getCurrentLimits %%
         % returns the current contrast limits
-        function [ cLim ] = getCurrentLimits(obj)
+        function [ cLim ] = getCurrentLimits(file)
             %getCurrentLimits returns cLims dependent on whether contrast is set or not
             
-            if obj.contrastOn
-                cLim = obj.contrastLimits;
+            if file.contrastOn
+                cLim = file.contrastLimits;
             else
-                cLim = obj.originalLimits;
+                cLim = file.originalLimits;
             end
             
         end
         
         %% getCurrentImage %%
         % returns cropped imaged or not
-        function [ image ] = getCurrentImage(obj)
+        function [ image ] = getCurrentImage(file, cachedImage)
             %getCurrentImage returns the current image for the file (entire or ROI)
-            
-            if obj.roiOn
-                image = imcrop(obj.image, obj.roiCoords);
+                        
+            if file.roiOn
+                image = imcrop(cachedImage, file.roiCoords);
             else
-                image = obj.image;
+                image = cachedImage;
             end           
         end
         
         %% getAdjustedImage %%
         % applies contrast limits to actual image values
-        function [ adjImage ] = getAdjustedImage(obj)
+        function [ adjImage ] = getAdjustedImage(file, image)
             %getAdjustedImage returns image matrix with contrast applied, if required
             
-            adjImage = getCurrentImage(obj);
+            adjImage = getCurrentImage(file, image);
             
-            if obj.contrastOn
+            if file.contrastOn
                 dims = size(adjImage);
                 
-                contrastLim = obj.contrastLimits;
+                contrastLim = file.contrastLimits;
                 
                 for i=1:dims(1)
                     for j=1:dims(2)

@@ -52,7 +52,7 @@ if currentFile.metricsOn
             point = [1,1]; %display in upper corner
             textLabel = TextLabel(point, tubeMetricStrings{i}, labelBorderColour, textColour, fontSize);
             
-            textLabel.setAbsolutePosition([5, (i*20) - 7]);          
+            textLabel.setAbsolutePosition([5, (i*30) - 7]);          
             
             textLabels(numMetricLines+i) = textLabel;
         end
