@@ -121,7 +121,7 @@ function closeAllPatients_ClickedCallback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-giantCloseAllPatient(hObject, handles);
+giantCloseAllPatients(hObject, handles);
 
 % --------------------------------------------------------------------
 function undo_ClickedCallback(hObject, eventdata, handles) %#ok<*DEFNU>
@@ -423,7 +423,7 @@ function selectContrast_ClickedCallback(hObject, eventdata, handles)
 currentFile = getCurrentFile(handles);
 
 if currentFile.roiOn % the MATLAB contrast interface when the image isn't using enough of the range, so for ROI we max it out
-    roiImage = imcrop(currentFile.image, currentFile.roiCoords);
+    roiImage = imcrop(handles.currentImage, currentFile.roiCoords);
     
     cLim = [min(min(roiImage)), max(max(roiImage))];
     
@@ -655,7 +655,7 @@ function selectRoi_ClickedCallback(hObject, eventdata, handles)
 
 currentFile = getCurrentFile(handles);
 
-[xmin,ymin,width,height] = findRoi(currentFile.image); %gives an ROI estimation
+[xmin,ymin,width,height] = findRoi(handles.currentImage); %gives an ROI estimation
 
 currentFile.roiOn = false;
 
@@ -743,7 +743,7 @@ function segmentTube_ClickedCallback(hObject, eventdata, handles)
 
 currentFile = getCurrentFile(handles);
 
-image = currentFile.getAdjustedImage();
+image = currentFile.getAdjustedImage(handles.currentImage);
 
 stepRadius = str2double(get(handles.stepRadius, 'String'));
 searchAngle = str2double(get(handles.searchAngle, 'String'));

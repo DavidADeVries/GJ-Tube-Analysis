@@ -2,7 +2,7 @@ function [ handles ] = drawImage( currentFile, handles )
 %drawImage draws the actual image itself, no lines or other points are
 %drawn
 
-image = currentFile.getCurrentImage(); %either ROI or not
+image = currentFile.getCurrentImage(handles.currentImage); %either ROI or not
 cLim = currentFile.getCurrentLimits();
 
 axes(handles.imageAxes);

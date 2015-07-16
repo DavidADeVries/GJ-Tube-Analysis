@@ -61,7 +61,7 @@ if ~isempty(tubePoints)
         postYDiff = mean(pointY - postPoints(:,2));
         
         %look for vertical max in matlab coords (point C)
-        if preYDiff > 0 && postYDiff > 0
+        if preYDiff > 0 && postYDiff > 0 && isempty(pointC)
             pointC = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
         end
         
