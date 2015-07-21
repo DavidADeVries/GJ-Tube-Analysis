@@ -24,7 +24,7 @@ classdef Constants
         
         METRIC_LINE_LABEL_BORDER_COLOUR = [0 0 0] / 255; %black
         METRIC_LINE_LABEL_TEXT_COLOUR = [0 255 0] / 255; %lime green
-        METRIC_LINE_LABEL_FONT_SIZE = 20;
+        METRIC_LINE_LABEL_FONT_SIZE = 15;
         
         METRIC_LINE_WIDTH = 3;
         METRIC_LINE_ARROW_ENDS = 'both';
@@ -37,7 +37,7 @@ classdef Constants
         METRIC_POINT_COLOUR = [255,255,0] / 255; %yellow
         METRIC_POINT_LABEL_BORDER_COLOUR = [0 0 0] / 255; %black
         METRIC_POINT_LABEL_TEXT_COLOUR = [255, 255, 0] / 255; %yellow
-        METRIC_POINT_LABEL_FONT_SIZE = 20;
+        METRIC_POINT_LABEL_FONT_SIZE = 15;
         
         WAYPOINT_COLOUR = 'c'; %cyan
         
@@ -54,14 +54,14 @@ classdef Constants
         QUICK_MEASURE_LINE_COLOUR = [255, 153, 51] / 255; %brownish-orange
         QUICK_MEASURE_LABEL_BORDER_COLOUR = [0 0 0] / 255; %black
         QUICK_MEASURE_LABEL_TEXT_COLOUR = [255, 153, 51] / 255; %brownish-orange
-        QUICK_MEASURE_LABEL_FONT_SIZE = 20;
+        QUICK_MEASURE_LABEL_FONT_SIZE = 15;
         
         LONGITUDINAL_START_COLOUR = [0 127 255] / 255; %blue
         LONGITUDINAL_END_COLOUR = [153 51 255] / 255; %purple
                 
         DELTA_LINE_LABEL_BORDER_COLOUR = [0 0 0] / 255; %black
         DELTA_LINE_LABEL_TEXT_COLOUR = [255, 103, 0] / 255; %orange
-        DELTA_LINE_LABEL_FONT_SIZE = 20;
+        DELTA_LINE_LABEL_FONT_SIZE = 15;
         
         DELTA_LINE_BORDER_COLOUR = [0 0 0] /255; %black
         DELTA_LINE_WIDTH = 3;

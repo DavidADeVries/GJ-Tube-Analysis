@@ -30,80 +30,80 @@ if ~isempty(currentFile) %add in file operations for module
     % state of these depends on what state file is in
     %contrast toggle button
     if ~isempty(currentFile.contrastLimits)
-        set(handles.toggleContrast, 'Enable', 'on');
+        %set(handles.toggleContrast, 'Enable', 'on');
         set(handles.menuToggleContrast, 'Enable', 'on');
     end
     
     if currentFile.contrastOn
-        set(handles.toggleContrast, 'State', 'on');
+        %set(handles.toggleContrast, 'State', 'on');
         set(handles.menuToggleContrast, 'Checked', 'on');
     end
     
     %ROI toggle button
     if ~isempty(currentFile.roiCoords)
-        set(handles.toggleRoi, 'Enable', 'on');
+        %set(handles.toggleRoi, 'Enable', 'on');
         set(handles.menuToggleRoi, 'Enable', 'on');
     end
     
     if currentFile.roiOn
-        set(handles.toggleRoi, 'State', 'on');
+        %set(handles.toggleRoi, 'State', 'on');
         set(handles.menuToggleRoi, 'Checked', 'on');
     end
     
     %waypoint toggle button
     if ~isempty(currentFile.waypoints)
-        set(handles.toggleWaypoints, 'Enable', 'on');
+        %set(handles.toggleWaypoints, 'Enable', 'on');
         set(handles.menuToggleWaypoints, 'Enable', 'on');
         set(handles.segmentTube, 'Enable', 'on');
         set(handles.menuSegmentTube, 'Enable', 'on');
     end
     
     if currentFile.waypointsOn
-        set(handles.toggleWaypoints, 'State', 'on');
+        %set(handles.toggleWaypoints, 'State', 'on');
         set(handles.menuToggleWaypoints, 'Checked', 'on');
     end
     
     %tube toggle button
     if ~isempty(currentFile.tubePoints)
-        set(handles.toggleTube, 'Enable', 'on');
+        %set(handles.toggleTube, 'Enable', 'on');
         set(handles.menuToggleTube, 'Enable', 'on');
     end
     
     if currentFile.tubeOn
-        set(handles.toggleTube, 'State', 'on');
+        %set(handles.toggleTube, 'State', 'on');
         set(handles.menuToggleTube, 'Checked', 'on');
     end
     
     %reference points button
     if ~isempty(currentFile.refPoints)
-        set(handles.toggleReference, 'Enable', 'on');
+        %set(handles.toggleReference, 'Enable', 'on');
         set(handles.menuToggleReference, 'Enable', 'on');
     end
     
     if currentFile.refOn
-        set(handles.toggleReference, 'State', 'on');
+        %set(handles.toggleReference, 'State', 'on');
         set(handles.menuToggleReference, 'Checked', 'on');
     end
     
     %midline points button
     if ~isempty(currentFile.midlinePoints)
-        set(handles.toggleMidline, 'Enable', 'on');
+        %set(handles.toggleMidline, 'Enable', 'on');
         set(handles.menuToggleMidline, 'Enable', 'on');
     end
     
     if currentFile.midlineOn
-        set(handles.toggleMidline, 'State', 'on');
+        %set(handles.toggleMidline, 'State', 'on');
         set(handles.menuToggleMidline, 'Checked', 'on');
     end
     
     %metrics button
     if ~isempty(currentFile.metricPoints)
-        set(handles.toggleMetrics, 'Enable', 'on');
+        %set(handles.toggleMetrics, 'Enable', 'on');
         set(handles.menuToggleMetrics, 'Enable', 'on');
     end
     
     if currentFile.metricsOn
-        set(handles.toggleMetrics, 'State', 'on');
+        %set(handles.toggleMetrics, 'State', 'on');
         set(handles.menuToggleMetrics, 'Checked', 'on');
     end
     
@@ -114,12 +114,12 @@ if ~isempty(currentFile) %add in file operations for module
     
     %quick measure button
     if ~isempty(currentFile.quickMeasurePoints)
-        set(handles.toggleQuickMeasure, 'Enable', 'on');
+        %set(handles.toggleQuickMeasure, 'Enable', 'on');
         set(handles.menuToggleQuickMeasure, 'Enable', 'on');
     end
     
     if currentFile.quickMeasureOn
-        set(handles.toggleQuickMeasure, 'State', 'on');
+        %set(handles.toggleQuickMeasure, 'State', 'on');
         set(handles.menuToggleQuickMeasure, 'Checked', 'on');
     end
     
