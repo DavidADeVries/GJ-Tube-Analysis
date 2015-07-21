@@ -18,25 +18,25 @@ set(handles.calcMetrics, 'Enable', 'off');
 set(handles.calcLongitudinal, 'Enable', 'off');
 set(handles.quickMeasure, 'Enable', 'off');
 
-set(handles.toggleContrast, 'Enable', 'off');
-set(handles.toggleRoi, 'Enable', 'off');
-set(handles.toggleWaypoints, 'Enable', 'off');
-set(handles.toggleTube, 'Enable', 'off');
-set(handles.toggleReference, 'Enable', 'off');
-set(handles.toggleMidline, 'Enable', 'off');
-set(handles.toggleMetrics, 'Enable', 'off');
-set(handles.toggleLongitudinal, 'Enable', 'off');
-set(handles.toggleQuickMeasure, 'Enable', 'off');
+% set(handles.toggleContrast, 'Enable', 'off');
+% set(handles.toggleRoi, 'Enable', 'off');
+% set(handles.toggleWaypoints, 'Enable', 'off');
+% set(handles.toggleTube, 'Enable', 'off');
+% set(handles.toggleReference, 'Enable', 'off');
+% set(handles.toggleMidline, 'Enable', 'off');
+% set(handles.toggleMetrics, 'Enable', 'off');
+% set(handles.toggleLongitudinal, 'Enable', 'off');
+% set(handles.toggleQuickMeasure, 'Enable', 'off');
 
-set(handles.toggleContrast, 'State', 'off');
-set(handles.toggleRoi, 'State', 'off');
-set(handles.toggleWaypoints, 'State', 'off');
-set(handles.toggleTube, 'State', 'off');
-set(handles.toggleReference, 'State', 'off');
-set(handles.toggleMidline, 'State', 'off');
-set(handles.toggleMetrics, 'State', 'off');
-set(handles.toggleLongitudinal, 'State', 'off');
-set(handles.toggleQuickMeasure, 'State', 'off');
+% set(handles.toggleContrast, 'State', 'off');
+% set(handles.toggleRoi, 'State', 'off');
+% set(handles.toggleWaypoints, 'State', 'off');
+% set(handles.toggleTube, 'State', 'off');
+% set(handles.toggleReference, 'State', 'off');
+% set(handles.toggleMidline, 'State', 'off');
+% set(handles.toggleMetrics, 'State', 'off');
+% set(handles.toggleLongitudinal, 'State', 'off');
+% set(handles.toggleQuickMeasure, 'State', 'off');
 
 % don't even want to see these ones
 set(handles.generalAccept, 'Visible', 'off');
