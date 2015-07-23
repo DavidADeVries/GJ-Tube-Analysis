@@ -8,7 +8,7 @@ classdef Constants
         ALLOW_CLOSE = true;
         
         % for released
-        %GIANT_PATH = strcat(HighLevelConstants.BASE_DIRECTORY, /General Image Analysis Toolkit/Current Release/metadata/');
+        %GIANT_PATH = strcat(HighLevelConstants.BASE_DIRECTORY, '/General Image Analysis Toolkit/Current Release/metadata/');
         %ALLOW_CLOSE = false;
         
         
