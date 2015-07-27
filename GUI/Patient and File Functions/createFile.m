@@ -1,8 +1,10 @@
-function [ file ] = createFile(imageFilename, dicomInfo, imagePath )
+function [ file ] = createFile(imageFilename, dicomInfo, imagePath, image )
 %[ file ] = createFile(iamgeFilename, dicomInfo, dicomImage )
 %   As required by GIANT
 
-file = GasSamFile(imageFilename, dicomInfo, imagePath);
+originalLimits = [min(min(image)), max(max(image))]; %saves contrast state
+
+file = GasSamFile(imageFilename, dicomInfo, imagePath, originalLimits);
 
 
 end

@@ -29,12 +29,10 @@ classdef GasSamFile < File
     
     methods
         %% Constructor %%
-        function gasSamFile = GasSamFile(name, dicomInfo, imagePath)
+        function gasSamFile = GasSamFile(name, dicomInfo, imagePath, originalLimits)
             gasSamFile@File(name, dicomInfo, imagePath);
             
-            image = double(dicomread(imagePath));
-            
-            gasSamFile.originalLimits = [min(min(image)), max(max(image))];
+            gasSamFile.originalLimits = originalLimits;
         end
         
         %% setWaypoints %%
