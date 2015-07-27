@@ -91,7 +91,17 @@ function GAS_SAM_CloseRequestFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to GAS_SAM (see VARARGIN)
 
-giantCloseRequestFcn(hObject, handles);
+giantCloseRequestFcn(hObject);
+
+if Constants.ALLOW_CLOSE
+    if isequal(get(hObject, 'waitstatus'), 'waiting')
+        % The GUI is still in UIWAIT, us UIRESUME
+        uiresume(hObject);
+    else
+        % The GUI is no longer waiting, just close it
+        delete(hObject);
+    end
+end
 
 
 % % % % % % % % % % % % % % % %
