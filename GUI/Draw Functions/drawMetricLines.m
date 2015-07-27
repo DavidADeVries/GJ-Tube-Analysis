@@ -6,6 +6,9 @@ function [ handles ] = drawMetricLines(currentFile, handles, toggled)
 textLabels = handles.metricLineTextLabels;
 displayLines = handles.metricLineDisplayLines;
 
+curvatureMetricsPosition = [5, 7];
+curvatureMetricsSpacing = 30;
+
 if currentFile.metricsOn
     if isempty(textLabels) || isempty(displayLines) %create new 
         metricLines = calcMetricLines(currentFile);
@@ -52,7 +55,7 @@ if currentFile.metricsOn
             point = [1,1]; %display in upper corner
             textLabel = TextLabel(point, tubeMetricStrings{i}, labelBorderColour, textColour, fontSize);
             
-            textLabel.setAbsolutePosition([5, (i*30) - 7]);          
+            textLabel.setAbsolutePosition([curvatureMetricsPosition(1), (i*curvatureMetricsSpacing) - curvatureMetricsPosition(2)]);          
             
             textLabels(numMetricLines+i) = textLabel;
         end
@@ -88,7 +91,7 @@ if currentFile.metricsOn
         for i=1:numTubeMetrics
             textLabels(numMetricLines+i).update([1,1], tubeMetricStrings{i});
             
-            textLabels(numMetricLines+i).setAbsolutePosition([5, (i*20) - 7]); 
+            textLabels(numMetricLines+i).setAbsolutePosition([curvatureMetricsPosition(1), (i*curvatureMetricsSpacing) - curvatureMetricsPosition(2)]); 
         end
     end      
 else %turn it off
