@@ -12,6 +12,7 @@ addpath(genpath('.')); %add all subfolders in the current directory
 addpath(genpath(strcat(Constants.GIANT_PATH, 'GIANT Code')));
 addpath(strcat(Constants.GIANT_PATH, 'Common Module Functions/Quick Measure'));
 addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Plot Impoint'));
+addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Line Labels'));
 
 % GAS_SAM MATLAB code for GAS_SAM.fig
 %      GAS_SAM, by itself, creates a new GAS_SAM or raises the existing
