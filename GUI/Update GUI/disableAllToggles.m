@@ -38,10 +38,6 @@ set(handles.quickMeasure, 'Enable', 'off');
 % set(handles.toggleLongitudinal, 'State', 'off');
 % set(handles.toggleQuickMeasure, 'State', 'off');
 
-% don't even want to see these ones
-set(handles.generalAccept, 'Visible', 'off');
-set(handles.generalDecline, 'Visible', 'off');
-
 %menu options
 
 set(handles.menuSelectContrast, 'Enable', 'off');
