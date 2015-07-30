@@ -36,7 +36,7 @@ addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Plot Impoint'));
 
 % Edit the above text to modify the response to help GAS_SAM
 
-% Last Modified by GUIDE v2.5 23-Jul-2015 13:43:24
+% Last Modified by GUIDE v2.5 30-Jul-2015 14:56:37
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,13 +83,15 @@ function varargout = GAS_SAM_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-% --- Executes just before GAS_SAM is made visible.
-function GAS_SAM_CloseRequestFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
+
+% --- Executes when user attempts to close mainPanel.
+function mainPanel_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to mainPanel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to GAS_SAM (see VARARGIN)
+
+% Hint: delete(hObject) closes the figure
+%delete(hObject);
 
 giantCloseRequestFcn(hObject, handles);
 
@@ -1819,3 +1821,5 @@ function angularRes_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of angularRes as text
 %        str2double(get(hObject,'String')) returns contents of angularRes as a double
+
+
