@@ -61,7 +61,7 @@ if ~isempty(tubePoints)
         postYDiff = mean(pointY - postPoints(:,2));
         
         %look for vertical max in matlab coords (point C)
-        if preYDiff > 0 && postYDiff > 0 && isempty(pointC)
+        if preYDiff > 0 && postYDiff > 0 && isempty(pointC) && ~isempty(pointB)
             pointC = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
         end
         
@@ -69,7 +69,7 @@ if ~isempty(tubePoints)
         %coords) for left of the midline (medically right of midline)
         currentLeftOfMidline = rotTubePoints(i,1) < corMidlinePoints(1,1);
         
-        if isempty(pointC) && currentLeftOfMidline
+        if isempty(pointC) && currentLeftOfMidline && ~isempty(pointB)
             % update max if needed
             if rotTubePoints(i,2) > maxVerticalValue
                 maxVerticalValue = rotTubePoints(i,2);
