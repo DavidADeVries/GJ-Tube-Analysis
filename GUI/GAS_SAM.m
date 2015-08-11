@@ -507,9 +507,9 @@ disableAllToggles(handles);
 
 currentFile = getCurrentFile(handles);
 
-[xmin,ymin,width,height] = findRoi(handles.currentImage); %gives an ROI estimation
-
 currentFile.roiOn = false;
+
+[xmin,ymin,width,height] = findRoi(currentFile.getAdjustedImage(handles.currentImage)); %gives an ROI estimation
 
 handles = drawImage(currentFile, handles);
 
