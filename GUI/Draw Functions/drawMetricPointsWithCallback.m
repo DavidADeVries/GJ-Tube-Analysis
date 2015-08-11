@@ -8,7 +8,7 @@ textLabels = handles.metricPointTextLabels;
 metricPoints = currentFile.metricPoints();
 
 if ~isempty(metricPoints)
-    points = metricPoints.getPointCoords(currentFile);
+    points = metricPoints.getPointCoords();
     
     numPoints = height(points);
     

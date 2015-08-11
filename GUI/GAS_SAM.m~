@@ -515,7 +515,6 @@ handles = drawImage(currentFile, handles);
 
 cropWindow = imrect(handles.imageAxes, [xmin,ymin,width,height]);
 cropCoords = wait(cropWindow);
-delete(cropWindow);
 
 currentFile.roiCoords = cropCoords;
 currentFile.roiOn = true;
@@ -527,7 +526,7 @@ pendingChanges = true;
 handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
 
 % update display
-handles = drawAll(currentFile, handles, hObject);
+handles = drawImage(currentFile, handles);
 updateToggleButtons(handles);
 
 % push up the changes
@@ -614,10 +613,6 @@ waypoints = currentFile.getWaypoints();
 waitHandle = pleaseWaitDialog('segmenting tube.');
 
 try
-    if currentFile.roiOn
-        waypoints = nonRoiToRoi(currentFile.roiCoords, waypoints);
-    end
-    
     [rawTubePoints, numTubes] = pathFinder3(image, waypoints, stepRadius, searchAngle, searchRadius, angularRes);
 catch
     numTubes = 0;
@@ -636,10 +631,6 @@ elseif numTubes > 1
     
     msgbox(message, title);   
 else
-    if currentFile.roiOn
-        rawTubePoints = roiToNonRoi(currentFile.roiCoords, rawTubePoints);
-    end
-    
     currentFile.tubeOn = true;
     currentFile.metricPoints = MetricPoints.empty;
     currentFile.metricsOn = false;
@@ -1095,7 +1086,7 @@ pendingChanges = true;
 handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
 
 % update display
-handles = drawImage(currentFile, handles);
+handles = drawAll(currentFile, handles, hObject);
 updateToggleButtons(handles);
 
 % push up the changes

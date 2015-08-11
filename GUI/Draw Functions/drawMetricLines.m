@@ -52,7 +52,10 @@ if currentFile.metricsOn
         
         % display tube metrics
         for i=1:numTubeMetrics
-            point = [1,1]; %display in upper corner
+            xLim = get(handles.imageAxes, 'XLim');
+            yLim = get(handles.imageAxes, 'YLim');
+                        
+            point = [xLim(1), yLim(1)]; %display in upper corner
             textLabel = TextLabel(point, tubeMetricStrings{i}, labelBorderColour, textColour, fontSize);
             
             textLabel.setAbsolutePosition([curvatureMetricsPosition(1), (i*curvatureMetricsSpacing) - curvatureMetricsPosition(2)]);          
@@ -89,7 +92,12 @@ if currentFile.metricsOn
         end
         
         for i=1:numTubeMetrics
-            textLabels(numMetricLines+i).update([1,1], tubeMetricStrings{i});
+            xLim = get(handles.imageAxes, 'XLim');
+            yLim = get(handles.imageAxes, 'YLim');
+                        
+            point = [xLim(1), yLim(1)];
+            
+            textLabels(numMetricLines+i).update(point, tubeMetricStrings{i});
             
             textLabels(numMetricLines+i).setAbsolutePosition([curvatureMetricsPosition(1), (i*curvatureMetricsSpacing) - curvatureMetricsPosition(2)]); 
         end

@@ -38,61 +38,61 @@ classdef GasSamFile < File
         %% setWaypoints %%
         % sets points, transforming points in non-ROI coords
         function file = setWaypoints(file, waypoints)
-            file.waypoints = confirmNonRoi(waypoints, file.roiOn, file.roiCoords);
+            file.waypoints = waypoints;
         end
         
         %% getWaypoints %%
         % gets points adjusting for ROI being on or not
         function waypoints = getWaypoints(file)
-            waypoints = confirmMatchRoi(file.waypoints, file.roiOn, file.roiCoords);
+            waypoints = file.waypoints;
         end
         
         %% setTubePoints %%
         % sets points, transforming points in non-ROI coords
         function file = setTubePoints(file, tubePoints)
-            file.tubePoints = confirmNonRoi(tubePoints, file.roiOn, file.roiCoords);
+            file.tubePoints = tubePoints;
         end
         
         %% getTubePoints %%
         % gets points adjusting for ROI being on or not
         function tubePoints = getTubePoints(file)
-            tubePoints = confirmMatchRoi(file.tubePoints, file.roiOn, file.roiCoords);
+            tubePoints = file.tubePoints;
         end
                 
         %% setRefPoints %%
         % sets points, transforming points in non-ROI coords
         function file = setRefPoints(file, refPoints)
-            file.refPoints = confirmNonRoi(refPoints, file.roiOn, file.roiCoords);
+            file.refPoints = refPoints;
         end
         
         %% getRefPoints %%
         % gets points adjusting for ROI being on or not
         function refPoints = getRefPoints(file)
-            refPoints = confirmMatchRoi(file.refPoints, file.roiOn, file.roiCoords);
+            refPoints = file.refPoints;
         end
         
         %% setMidlinePoints %%
         % sets points, transforming points in non-ROI coords
         function file = setMidlinePoints(file, midlinePoints)
-            file.midlinePoints = confirmNonRoi(midlinePoints, file.roiOn, file.roiCoords);
+            file.midlinePoints = midlinePoints;
         end
         
         %% getMidlinePoints %%
         % gets points adjusting for ROI being on or not
         function midlinePoints = getMidlinePoints(file)
-            midlinePoints = confirmMatchRoi(file.midlinePoints, file.roiOn, file.roiCoords);
+            midlinePoints = file.midlinePoints;
         end
                 
         %% setQuickMeasurePoints %%
         % sets points, transforming points in non-ROI coords
         function file = setQuickMeasurePoints(file, quickMeasurePoints)
-            file.quickMeasurePoints = confirmNonRoi(quickMeasurePoints, file.roiOn, file.roiCoords);
+            file.quickMeasurePoints = quickMeasurePoints;
         end
         
         %% getQuickMeasurePoints %%
         % gets points adjusting for ROI being on or not
         function quickMeasurePoints = getQuickMeasurePoints(file)
-            quickMeasurePoints = confirmMatchRoi(file.quickMeasurePoints, file.roiOn, file.roiCoords);
+            quickMeasurePoints = file.quickMeasurePoints;
         end
         
         %% getDisplayTubePoints %%
@@ -211,25 +211,17 @@ classdef GasSamFile < File
             end
             
         end
-        
-        %% getCurrentImage %%
-        % returns cropped imaged or not
-        function [ image ] = getCurrentImage(file, cachedImage)
-            %getCurrentImage returns the current image for the file (entire or ROI)
-                        
-            if file.roiOn
-                image = imcrop(cachedImage, file.roiCoords);
-            else
-                image = cachedImage;
-            end           
-        end
-        
+                
         %% getAdjustedImage %%
         % applies contrast limits to actual image values
         function [ adjImage ] = getAdjustedImage(file, image)
             %getAdjustedImage returns image matrix with contrast applied, if required
-            
-            adjImage = getCurrentImage(file, image);
+                        
+            if file.roiOn
+                adjImage = imcrop(image, file.roiCoords);
+            else
+                adjImage = image;
+            end
             
             if file.contrastOn
                 dims = size(adjImage);
@@ -272,9 +264,7 @@ classdef GasSamFile < File
         function file = updateMetricPoints(file, metricPointCoords)
             localMetricPoints = file.metricPoints;
             
-            if height(metricPointCoords) == localMetricPoints.getNumPoints()
-                metricPointCoords = confirmNonRoi(metricPointCoords, file.roiOn, file.roiCoords);
-                
+            if height(metricPointCoords) == localMetricPoints.getNumPoints()                
                 localMetricPoints.pylorusPoint = metricPointCoords(1,:);
                 localMetricPoints.pointA = metricPointCoords(2,:);
                 localMetricPoints.pointB = metricPointCoords(3,:);

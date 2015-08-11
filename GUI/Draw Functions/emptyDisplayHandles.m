@@ -4,6 +4,8 @@ function [ handles ] = emptyDisplayHandles( handles )
 % useful when an imshow clears everything, but you still have the handles
 % for objects lying around
 
+handles.imageHandle = gobjects(0);
+
 handles.waypointHandles = impoint.empty;
 handles.displayTube = DisplayTube.empty;
 handles.metricLineTextLabels = TextLabel.empty;

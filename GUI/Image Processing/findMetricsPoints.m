@@ -62,7 +62,7 @@ if ~isempty(tubePoints)
         
         %look for vertical max in matlab coords (point C)
         if preYDiff > 0 && postYDiff > 0 && isempty(pointC) && ~isempty(pointB)
-            pointC = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
+            pointC = tubePoints(i,:);
         end
         
         %if max not found for point C, assign it to be vertical max (matlab
@@ -81,19 +81,19 @@ if ~isempty(tubePoints)
             nextRightOfMidline = rotTubePoints(i+1,1) >= corMidlinePoints(1,1);
         
             if nextRightOfMidline
-                pointC = confirmNonRoi(tubePoints(maxVerticalIndex,:), currentFile.roiOn, currentFile.roiCoords);
+                pointC = tubePoints(maxVerticalIndex,:);
             end
         end  
         
         %look for vertical min in matlab coords (point A)
         %checks if still in point A territory (e.g. B and C not found)
         if isempty(pointB) && isempty(pointC) && preYDiff < 0 && postYDiff < 0
-            pointA = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
+            pointA = tubePoints(i,:);
         end
         
         %look for hoizontal min in matlab coords (point B)
         if preXDiff < 0 && postXDiff < 0
-            pointB = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
+            pointB = tubePoints(i,:);
         end
         
         % look in 45deg rotated axes for point D
@@ -114,7 +114,7 @@ if ~isempty(tubePoints)
         
         % only look for D after at least one of the other points is defined
         if (~isempty(pointA) || ~isempty(pointB) || ~isempty(pointC)) && preYDiff45 < 0 && postYDiff45 > 0
-            pointD = confirmNonRoi(tubePoints(i,:), currentFile.roiOn, currentFile.roiCoords);
+            pointD = tubePoints(i,:);
         end
         
     end
@@ -127,9 +127,7 @@ if ~cancelled
     
     message = 'Please select the pylorus. The pylorus cannot be automatically defined.';
     
-    point = manualPointSelection(message);
-    
-    pylorus = confirmNonRoi(point, currentFile.roiOn, currentFile.roiCoords);
+    pylorus = manualPointSelection(message);
     
     metricPoints = MetricPoints(pylorus, pointA, pointB, pointC, pointD);
     
@@ -161,7 +159,7 @@ if ~cancelled
             line2 = char(descriptors{i});
             
             point = manualPointSelection({line1; line2});
-            point = confirmNonRoi(point, currentFile.roiOn, currentFile.roiCoords);
+            
             points{i} = point;
             
             handles = deleteMetricPoints(handles);

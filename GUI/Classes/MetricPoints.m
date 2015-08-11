@@ -21,10 +21,8 @@ classdef MetricPoints
         end
         
         %% getPointCoords %%
-        function points = getPointCoords(metricPoints, file)
+        function points = getPointCoords(metricPoints)
             points = metricPoints.getPoints();
-            
-            points = confirmMatchRoi(points, file.roiOn, file.roiCoords);
         end
         
         %% getNumPoints %%
