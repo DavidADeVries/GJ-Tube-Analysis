@@ -29,8 +29,8 @@ classdef GasSamFile < File
     
     methods
         %% Constructor %%
-        function gasSamFile = GasSamFile(name, dicomInfo, imagePath, originalLimits)
-            gasSamFile@File(name, dicomInfo, imagePath);
+        function gasSamFile = GasSamFile(name, dicomInfo, imagePath, image, originalLimits)
+            gasSamFile@File(name, dicomInfo, imagePath, image);
             
             gasSamFile.originalLimits = originalLimits;
         end

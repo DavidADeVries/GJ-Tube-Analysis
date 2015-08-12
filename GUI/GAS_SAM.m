@@ -508,6 +508,7 @@ disableAllToggles(handles);
 currentFile = getCurrentFile(handles);
 
 currentFile.roiOn = false;
+currentFile = currentFile.setToDefaultZoom(handles.currentImage);
 
 [xmin,ymin,width,height] = findRoi(currentFile.getAdjustedImage(handles.currentImage)); %gives an ROI estimation
 
@@ -1095,7 +1096,7 @@ pendingChanges = true;
 handles = updateFile(currentFile, updateUndo, pendingChanges, handles);
 
 % update display
-handles = drawImage(currentFile, handles);
+handles = drawAll(currentFile, handles, hObject);
 updateToggleButtons(handles);
 
 % push up the changes

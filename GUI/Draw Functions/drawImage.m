@@ -19,18 +19,18 @@ end
 
 % set roi if on
 if currentFile.roiOn
-    roiCoords = currentFile.roiCoords();
+    roiCoords = currentFile.roiCoords;
     
     xLim = [roiCoords(1), roiCoords(1) + roiCoords(3)];
     yLim = [roiCoords(2), roiCoords(2) + roiCoords(4)];
 else
-    dims = size(image);
-    
-    xLim = [0, dims(1)];
-    yLim = [0, dims(2)];
+    xLim = currentFile.zoomLims.xLim;
+    yLim = currentFile.zoomLims.yLim;
 end
-    
+
+zoom reset; % do this or else zooming out becomes an issue
 set(axesHandle, 'XLim', xLim, 'YLim', yLim);
+
 
 
 end
