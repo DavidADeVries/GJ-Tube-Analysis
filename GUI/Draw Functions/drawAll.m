@@ -2,6 +2,8 @@ function [ handles ] = drawAll(currentFile, handles, hObject )
 %drawAll Used when switching or opening files to get everything up right
 %away
 
+handles = deleteAll(handles); % clear it all out first
+
 if isempty(currentFile)
     cla(handles.imageAxes);
 else
@@ -11,7 +13,7 @@ else
     
     handles = drawImage(currentFile, handles);
     
-    %handles = drawContrast(handles); %covered by drawImage
+    handles = drawContrast(currentFile, handles);
     handles = drawTube(currentFile, handles, toggled);
     handles = drawWaypoints(currentFile, handles, toggled, draggable);
     handles = drawRefLineWithCallback(currentFile, handles, hObject, toggled);

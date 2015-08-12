@@ -223,7 +223,6 @@ function [startPoint, endPoint, tagPoint] = transformForDisplay(startPoint, endP
 points = [startPoint; endPoint; tagPoint];
 
 points = applyRotationMatrix(points, invRotMatrix);
-points = confirmMatchRoi(points, roiOn, roiCoords);
 
 startPoint = points(1,:);
 endPoint = points(2,:);
