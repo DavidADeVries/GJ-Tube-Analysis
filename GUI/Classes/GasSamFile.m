@@ -14,7 +14,7 @@ classdef GasSamFile < File
         midlineOn = false;
         metricsOn = false;
         quickMeasureOn = false;
-        displayUnits = ''; %can be: none, absolute, relative, pixel
+        displayUnits = 'none'; %can be: none, absolute, relative, pixel
         
         waypoints = [];
         tubePoints = [];
