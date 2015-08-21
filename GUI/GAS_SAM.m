@@ -11,8 +11,8 @@ addpath(genpath('.')); %add all subfolders in the current directory
 
 addpath(genpath(strcat(Constants.GIANT_PATH, 'GIANT Code')));
 addpath(strcat(Constants.GIANT_PATH, 'Common Module Functions/Quick Measure'));
-addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Plot Impoint'));
-addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Line Labels'));
+addpath(strcat(Constants.GIANT_PATH, 'Common Module Functions/Plot Impoint'));
+addpath(strcat(Constants.GIANT_PATH, 'Common Module Functions/Line Labels'));
 
 % GAS_SAM MATLAB code for GAS_SAM.fig
 %      GAS_SAM, by itself, creates a new GAS_SAM or raises the existing
@@ -37,7 +37,7 @@ addpath(strcat(Constants.GIANT_PATH,'Common Module Functions/Line Labels'));
 
 % Edit the above text to modify the response to help GAS_SAM
 
-% Last Modified by GUIDE v2.5 30-Jul-2015 14:56:37
+% Last Modified by GUIDE v2.5 20-Aug-2015 11:06:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -323,6 +323,14 @@ function latestImage_ClickedCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 giantLatestImage(hObject, handles);
+
+% --------------------------------------------------------------------
+function resetImage_ClickedCallback(hObject, eventdata, handles)
+% hObject    handle to resetImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+giantResetImage(hObject, handles);
 
 
 % % DROP-DOWN SELECTORS % %
@@ -1542,6 +1550,14 @@ function menuTools_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % --------------------------------------------------------------------
+function menuResetImage_Callback(hObject, eventdata, handles)
+% hObject    handle to menuResetImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+resetImage_ClickedCallback(hObject, eventdata, handles);
+
+% --------------------------------------------------------------------
 function menuSelectReference_Callback(hObject, eventdata, handles)
 % hObject    handle to menuSelectReference (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1832,5 +1848,3 @@ function angularRes_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of angularRes as text
 %        str2double(get(hObject,'String')) returns contents of angularRes as a double
-
-

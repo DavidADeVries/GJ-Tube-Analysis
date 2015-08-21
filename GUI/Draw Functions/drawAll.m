@@ -4,7 +4,7 @@ function [ handles ] = drawAll(currentFile, handles, hObject )
 
 handles = deleteAll(handles); % clear it all out first
 
-if isempty(currentFile)
+if isempty(currentFile) || isempty(handles.currentImage)
     cla(handles.imageAxes);
 else
     toggled = false;

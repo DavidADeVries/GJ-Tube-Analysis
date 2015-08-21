@@ -14,6 +14,7 @@ classdef CacheEntry
         midlineOn
         metricsOn
         quickMeasureOn
+        displayUnits
         
         waypoints
         tubePoints
@@ -36,6 +37,7 @@ classdef CacheEntry
             cacheEntry.midlineOn = file.midlineOn;
             cacheEntry.metricsOn = file.metricsOn;
             cacheEntry.quickMeasureOn = file.quickMeasureOn;
+            cacheEntry.displayUnits = file.displayUnits;
             
             cacheEntry.waypoints = file.waypoints;
             cacheEntry.tubePoints = file.tubePoints;
@@ -57,6 +59,7 @@ classdef CacheEntry
             file.midlineOn = cacheEntry.midlineOn;
             file.metricsOn = cacheEntry.metricsOn;
             file.quickMeasureOn = cacheEntry.quickMeasureOn;
+            file.displayUnits = cacheEntry.displayUnits;
             
             file.waypoints = cacheEntry.waypoints;
             file.tubePoints = cacheEntry.tubePoints;

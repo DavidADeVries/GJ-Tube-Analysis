@@ -16,6 +16,7 @@ set(handles.selectReference, 'Enable', 'off');
 set(handles.selectMidline, 'Enable', 'off');
 set(handles.calcMetrics, 'Enable', 'off');
 set(handles.calcLongitudinal, 'Enable', 'off');
+set(handles.calcLongitudinal, 'Visible', 'off'); %set it to be invisible to have enough room
 set(handles.quickMeasure, 'Enable', 'off');
 
 % set(handles.toggleContrast, 'Enable', 'off');
