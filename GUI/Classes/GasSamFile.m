@@ -14,7 +14,7 @@ classdef GasSamFile < File
         midlineOn = false;
         metricsOn = false;
         quickMeasureOn = false;
-        displayUnits = 'none'; %can be: none, absolute, relative, pixel
+        displayUnits = ''; %can be: none, absolute, relative, pixel. '' means units have not yet been used.
         
         waypoints = [];
         tubePoints = [];

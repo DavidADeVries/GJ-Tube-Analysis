@@ -4,8 +4,12 @@ classdef HighLevelConstants
     
     properties (Constant = true) 
         BASE_DIRECTORY = '/data/projects';
-    
-        STUDY_DIRECTORY = '/GJ Tube/GJ Tube Study';
+        
+        % dev
+        STUDY_DIRECTORY = '/GJ Tube/GAS-SAM/Test Study';
+        
+        % released
+%         STUDY_DIRECTORY = '/GJ Tube/GJ Tube Study';
     end       
     
     methods

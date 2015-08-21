@@ -11,7 +11,7 @@ classdef Constants
         %GIANT_PATH = strcat(HighLevelConstants.BASE_DIRECTORY, '/General Image Analysis Toolkit/Current Release/metadata/');
         %ALLOW_CLOSE = false;
         
-        
+        ROOT_PATH = strcat(HighLevelConstants.BASE_DIRECTORY, HighLevelConstants.STUDY_DIRECTORY);
         SAVED_PATIENTS_DIRECTORY = strcat(HighLevelConstants.BASE_DIRECTORY, HighLevelConstants.STUDY_DIRECTORY, '/Saved Patient Analysis/'); %make sure it's absolute and ends with '/'
         RAW_DATA_DIRECTORY = strcat(HighLevelConstants.BASE_DIRECTORY, HighLevelConstants.STUDY_DIRECTORY, '/Raw Data/');
         CSV_EXPORT_DIRECTORY = strcat(HighLevelConstants.BASE_DIRECTORY, HighLevelConstants.STUDY_DIRECTORY, '/Exported Spreadsheets/');
