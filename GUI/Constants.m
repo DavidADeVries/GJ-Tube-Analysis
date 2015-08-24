@@ -19,7 +19,7 @@ classdef Constants
         
         SAVE_TITLE_SUGGESTION = 'Tube Analysis';
         
-        TUBE_POINT_RESOLUTION = 25;
+        TUBE_POINT_RESOLUTION = 20;
         
         TEXT_LABEL_BORDER_WIDTH = 1;
         DISPLAY_LINE_BORDER_WIDTH = 1;

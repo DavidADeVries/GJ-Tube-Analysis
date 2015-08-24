@@ -112,7 +112,18 @@ classdef GasSamFile < File
         function file = setTubePointsFromRaw(file, rawTubePoints, imageAxesHandle, currentImage)
             xTubePoints = rawTubePoints(:,1)';
             yTubePoints = rawTubePoints(:,2)';
-                        
+            
+            xMin = min(xTubePoints);
+            xMax = max(xTubePoints);
+            
+            yMin = min(yTubePoints);
+            yMax = max(yTubePoints);
+            
+            % this will be used to help calculate the spline point
+            % resolution
+            tubeWidth = abs(xMax - xMin);
+            tubeHeight = abs(yMax - yMin);
+            
             % STEP 1: make spline from all points. This is NOT the spline displayed
             spline = cscvn([xTubePoints; yTubePoints]); %spline store as a function
             initSplinePoints = fnplt(spline)'; %returns points doesn't actually display them
@@ -130,6 +141,8 @@ classdef GasSamFile < File
             % "TUBE_POINT_RESOLUTION pixels" e.g. a tube point every 15 pxs
             averSpacing = mean(norms);
             
+            %res = round(Constants.TUBE_POINT_RESOLUTION/averSpacing);
+            
             set(imageAxesHandle, 'Units', 'pixels');
             position = get(imageAxesHandle, 'Position');
             set(imageAxesHandle, 'Units', 'normalized');
@@ -140,12 +153,14 @@ classdef GasSamFile < File
             dims = size(currentImage);
             
             imageWidth = dims(2);
-            imageHeight = dims(1);
+            imageHeight = d
             
-            imageResScaleFactor = mean([imageWidth/axesWidth, imageHeight/axesHeight]);
-                        
-            res = round((Constants.TUBE_POINT_RESOLUTION/averSpacing)*imageResScaleFactor);
-                        
+            scaleFactor = mean([axesWidth/tubeWidth, axesHeight/tubeHeight]);
+            
+            res = round(Constants.TUBE_POINT_RESOLUTION*scaleFactor);
+            
+            disp(res);
+            
             % STEP 4: Get the tube points based upon this resolution from the initial
             % spline  
             numSplinePoints = height(initSplinePoints);          

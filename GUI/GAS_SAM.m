@@ -653,7 +653,7 @@ else
     currentFile.metricPoints = MetricPoints.empty;
     currentFile.metricsOn = false;
     
-    currentFile = currentFile.setTubePointsFromRaw(rawTubePoints);
+    currentFile = currentFile.setTubePointsFromRaw(rawTubePoints, handles.imageAxes, handles.currentImage);
     
     % finalize changes
     updateUndo = true;
@@ -694,7 +694,7 @@ delete(tubeHandle); %don't need it no more, going draw some splines instead
 currentFile = currentFile.setWaypoints([]); % no waypoints are needed when manual segmentation is done
 currentFile.waypointsOn = false;
 
-currentFile = currentFile.setTubePointsFromRaw(rawTubePoints);
+currentFile = currentFile.setTubePointsFromRaw(rawTubePoints, handles.imageAxes, handles.currentImage);
 currentFile.tubeOn = true;
 
 % finalize changes
