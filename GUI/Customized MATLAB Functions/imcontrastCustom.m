@@ -1192,6 +1192,7 @@ registerModularToolWithManager(hFig,imageHandle);
         
         buttonText = getString(message('images:imcontrastUIString:adjustDataButtonText'));
         
+        message = 'Click-and-drag to adjust histogram.';
         
         % Status Label
         if isCallerIMTOOL
