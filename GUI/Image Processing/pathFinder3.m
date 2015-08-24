@@ -40,7 +40,7 @@ despur = bwmorph(deblob, 'spur', Inf);
 %pre-processing complete
 mask = despur;
 
-maxIters = 1000;
+maxIters = 10000;
 
 % from the first point, find the way to go
 firstPoint = [waypoints(1,1), waypoints(1,2)];
@@ -52,6 +52,11 @@ ang = 0;
 
 maxEdgeDrop = 0;
 maxEdgeDropAng = 0;
+
+% DEBUG
+% figure(1);
+% imshow(mask,[]);
+% hold on;
 
 while ang < 180
     shift = [0,0]; %no shifting
@@ -238,6 +243,9 @@ for i=1:height(possibleSecondPoints)
         
         numTubePoints = numTubePoints + 1;
         tubePoints(numTubePoints,:) = point; % TODO: pre-allocate?!
+        
+        % DEBUG
+        %plot(point(1),point(2),'x');
         
         if (curPoint(1) > dims(2) - (searchRadius + 1)) || (curPoint(1) < (searchRadius + 1) || (curPoint(2) > dims(1) - (searchRadius + 1)) || (curPoint(2) < (searchRadius + 1)))
             break;

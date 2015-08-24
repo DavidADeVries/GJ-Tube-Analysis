@@ -1,4 +1,4 @@
-function hfigure = imcontrast(handle)
+function hfigure = imcontrastCustom(handle)
 %IMCONTRAST Adjust Contrast tool.
 %   IMCONTRAST creates an Adjust Contrast tool in a separate figure that is
 %   associated with the grayscale image in the current figure, called the 
@@ -182,14 +182,16 @@ hFig = figure('visible', 'off', ...
 suppressPlotTools(hFig);
 
 fig_pos = get(hFig,'Position');
-set(hFig,'Position',[fig_pos(1:2) 560 300]);
+
+set(hFig,'Position',[fig_pos(1:2) 400 200]);
 
 % keep the figure name up to date
 linkToolName(hFig,hImageFig,getString(message('images:commonUIString:adjustContrast')));
 
 setappdata(hImageAx, 'imcontrastFig', hFig);
 
-createMenubar;
+%createMenubar;
+
 
 % create a blank uitoolbar to get docking arrow on the mac as a workaround
 % to g222793.
@@ -205,31 +207,32 @@ hFigFlow = uiflowcontainer('v0',...
 
 % Create panel that contains data range, window edit boxes, and auto
 % scaling
-[backgroundColor clipPanelAPI windowClipPanelWidth] = ...
-    createWindowClipPanel(hFigFlow, imgModel);
-editBoxAPI = clipPanelAPI.editBoxAPI;
-scalePanelAPI = clipPanelAPI.scalePanelAPI;
-figureWidth = windowClipPanelWidth;
+%[backgroundColor clipPanelAPI windowClipPanelWidth] = ...
+%     createWindowClipPanel(hFigFlow, imgModel);
+% editBoxAPI = clipPanelAPI.editBoxAPI;
+% scalePanelAPI = clipPanelAPI.scalePanelAPI;
+% figureWidth = windowClipPanelWidth;
 
 % initialize tool contents
 initializeContrastTool;
 
 % adjust colors
-set(hFig,'Color', backgroundColor);
+%set(hFig);%,'Color', backgroundColor);
 setChildColorToMatchParent(hPanelHist, hFig);
         
 % Enable window/leveling through the mouse if not in imtool
 origBtnDwnFcn = get(imageHandle, 'ButtonDownFcn');
-[winLevelCbkStartId winLevelCbkStopId] = ...
-    attachWindowLevelMouseActions;
+% [winLevelCbkStartId winLevelCbkStopId] = ...
+%     attachWindowLevelMouseActions;
 
 % reset figure width
 fig_pos = get(hFig,'Position');
-set(hFig,'Position',[fig_pos(1:2) figureWidth 350]);
+set(hFig,'Position',[fig_pos(1:2) 400 200]);
 set(hFig, 'DeleteFcn', @closeHistFig);
 
 % setup clim history with initial value
 updateAllAndSaveInHistory(newClim);
+
 
 % React to changes in target image cdata
 reactToImageChangesInFig(imageHandle,hFig,@reactDeleteFcn,...
@@ -238,6 +241,7 @@ registerModularToolWithManager(hFig,imageHandle);
 
 
     %==============================
+       
     function initializeContrastTool
 
         % set image property values
@@ -274,8 +278,8 @@ registerModularToolWithManager(hFig,imageHandle);
         set(hAdjustButton, 'Visible','off');
         
         setUpCallbacksOnDraggableWindow;
-        setUpCallbacksOnWindowWidgets;
-        setUpCallbacksOnAutoScaling;
+       % setUpCallbacksOnWindowWidgets;
+       % setUpCallbacksOnAutoScaling;
         
         % react to changes in targe image axes clim
         setupCLimListener;
@@ -686,7 +690,7 @@ registerModularToolWithManager(hFig,imageHandle);
                 newMax = oldMaxX + delta;
 
                 % Don't let window shrink when dragging the window patch.
-                origWidth = getWidthOfWindow;
+                origWidth = 400;
                 histRange = histStruct.histRange;
                 
                 if newMin < histRange(1)
@@ -1188,19 +1192,19 @@ registerModularToolWithManager(hFig,imageHandle);
         
         buttonText = getString(message('images:imcontrastUIString:adjustDataButtonText'));
         
+        message = 'Click-and-drag to adjust histogram.';
+        
         % Status Label
         if isCallerIMTOOL
 %             defaultMessage = sprintf('%s\n%s', ...
 %                 getString(message('images:imcontrastUIString:adjustTheHistogramAbove')),...
 %                 getString(message('images:imcontrastUIString:clickToAdjust',buttonText)));
-                defaultMessage = sprintf('%s', ...
-                  getString(message('images:imcontrastUIString:adjustTheHistogramAbove')));
+                defaultMessage = sprintf('%s', message);
         else
 %             defaultMessage = sprintf('%s\n%s', ...
 %                 getString(message('images:imcontrastUIString:adjustTheHistogramAboveNotImtool')),...
 %                 getString(message('images:imcontrastUIString:clickToAdjust',buttonText)));
-            defaultMessage = sprintf('%s', ...
-                  getString(message('images:imcontrastUIString:adjustTheHistogramAboveNotImtool')));
+            defaultMessage = sprintf('%s', message);
         end
         hStatusLabel = uicontrol('parent', hBottomPanel, ...
             'units', 'pixels', ...
@@ -1386,7 +1390,7 @@ registerModularToolWithManager(hFig,imageHandle);
     function updateAll(newClim)
 
         % Update edit boxes with new values.
-        updateEditBoxes(newClim);
+        %updateEditBoxes(newClim);
 
         % Update patch display.
         updateHistogram(newClim);
