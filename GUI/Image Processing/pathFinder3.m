@@ -40,7 +40,7 @@ despur = bwmorph(deblob, 'spur', Inf);
 %pre-processing complete
 mask = despur;
 
-maxIters = 10000;
+maxIters = 10*2*((dims(1)+dims(2))/searchRadius); %max number of iterations: around the perimeter of the image 10x
 
 % from the first point, find the way to go
 firstPoint = [waypoints(1,1), waypoints(1,2)];
@@ -151,7 +151,7 @@ for i=1:height(possibleSecondPoints)
         tubePoints(numTubePoints,:) = point; % TODO: pre-allocate?!
         
         % DEBUG
-%         plot(point(1),point(2),'x');
+        % plot(point(1),point(2),'x');
         
         if (curPoint(1) > dims(2) - (searchRadius + 1)) || (curPoint(1) < (searchRadius + 1) || (curPoint(2) > dims(1) - (searchRadius + 1)) || (curPoint(2) < (searchRadius + 1)))
             break;
