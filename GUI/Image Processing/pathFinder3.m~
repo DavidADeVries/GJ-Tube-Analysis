@@ -143,12 +143,12 @@ for i=1:height(possibleSecondPoints)
             point = [x,y];
         end
         
-        % update points and add new point to the list of tubePoints
         lastPoint = curPoint;
         curPoint = point;
         
-        numTubePoints = numTubePoints + 1;
-        tubePoints(numTubePoints,:) = point; % TODO: pre-allocate?!
+            numTubePoints = numTubePoints + 1;
+            tubePoints(numTubePoints,:) = point; % TODO: pre-allocate?!
+        end
         
         % DEBUG
 %         plot(point(1),point(2),'x');
@@ -159,13 +159,11 @@ for i=1:height(possibleSecondPoints)
     end
     
     if curWaypointNum == numWaypoints+1 %completed successfully
-        numTubes = numTubes + 1; %update number of possible tubes
-        finalTubePoints = tubePoints; 
+        numTubes = numTubes + 1;
+        finalTubePoints = tubePoints;
     end
 end
 
-% only interest in having a single tube, so empty finalTubePoints if more
-% than 1 is found
 if numTubes ~= 1
     finalTubePoints = [];
 end
@@ -215,9 +213,7 @@ function tubeAngle = findTubeOrientation(mask, point, vertScanRadius, horzScanRa
     angle = 0;
 
     maxEdgeDrop = 0;
-    maxEdgeDropAng = 0;  
-    
-    angularRes = 5;
+    maxEdgeDropAng = 0;    
 
     while angle < 180
         shift = [0,0]; %no shifting
@@ -264,7 +260,7 @@ function tubeAngle = findTubeOrientation(mask, point, vertScanRadius, horzScanRa
             maxEdgeDropAng = angle;
         end
 
-        angle = angle + angularRes;
+        angle = angle + 5;
     end
     
     tubeAngle = maxEdgeDropAng;

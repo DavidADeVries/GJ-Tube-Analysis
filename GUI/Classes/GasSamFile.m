@@ -109,9 +109,12 @@ classdef GasSamFile < File
         end
                 
         %% setTubePointsFromRaw %%
-        function file = setTubePointsFromRaw(file, rawTubePoints)
+        function file = setTubePointsFromRaw(file, rawTubePoints, imageAxesHandle, currentImage)
+            xTubePoints = rawTubePoints(:,1)';
+            yTubePoints = rawTubePoints(:,2)';
+                        
             % STEP 1: make spline from all points. This is NOT the spline displayed
-            spline = cscvn([rawTubePoints(:,1)';rawTubePoints(:,2)']); %spline store as a function
+            spline = cscvn([xTubePoints; yTubePoints]); %spline store as a function
             initSplinePoints = fnplt(spline)'; %returns points doesn't actually display them
             
             % STEP 2: from this initial spline, find the spacing of all the points
@@ -127,13 +130,27 @@ classdef GasSamFile < File
             % "TUBE_POINT_RESOLUTION pixels" e.g. a tube point every 15 pxs
             averSpacing = mean(norms);
             
-            res = round(Constants.TUBE_POINT_RESOLUTION/averSpacing);
+            set(imageAxesHandle, 'Units', 'pixels');
+            position = get(imageAxesHandle, 'Position');
+            set(imageAxesHandle, 'Units', 'normalized');
             
+            axesWidth = position(3);
+            axesHeight = position(4);
+            
+            dims = size(currentImage);
+            
+            imageWidth = dims(2);
+            imageHeight = dims(1);
+            
+            imageResScaleFactor = mean([imageWidth/axesWidth, imageHeight/axesHeight]);
+                        
+            res = round((Constants.TUBE_POINT_RESOLUTION/averSpacing)*imageResScaleFactor);
+                        
             % STEP 4: Get the tube points based upon this resolution from the initial
-            % spline            
-            numPoints = floor(height(initSplinePoints)/res) + 1; %plus one to make room for the first point
+            % spline  
+            numSplinePoints = height(initSplinePoints);          
             
-            numSplinePoints = height(initSplinePoints);
+            numPoints = floor(numSplinePoints/res) + 1; %plus one to make room for the first point
                         
             localTubePoints = zeros(numPoints, 2);
             
