@@ -1017,7 +1017,9 @@ switch func
         
         %displayed imaged updated
         % delete tube points dragging points
-        handles = deleteTubePoints(handles);        
+        handles = deleteTubePoints(handles);
+        
+        handles = drawAll(currentFile, handles, hObject);
                 
         %push up changes
         guidata(hObject, handles);
@@ -1046,8 +1048,7 @@ switch func
         
         handles = deleteTubePoints(handles);
         
-        toggled = false;
-        handles = drawTube(currentFile, handles, toggled);
+        handles = drawAll(currentFile, handles, hObject);
         
         updateToggleButtons(handles);
         
